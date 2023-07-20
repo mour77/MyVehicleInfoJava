@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "861107820797",
+    "project_id": "vehiclesinfo-857e0",
+    "storage_bucket": "vehiclesinfo-857e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:861107820797:android:2c92335f134073d90e8694",
+        "android_client_info": {
+          "package_name": "com.example.myvehicleinfojava"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "861107820797-9d0jm07mitg68jns6p1rqvv93777jf5v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8jLzgaOsBhi5oRZFjUVWQKD6Y80awMck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "861107820797-9d0jm07mitg68jns6p1rqvv93777jf5v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:861107820797:android:05ef4625d3e727a10e8694",
+        "android_client_info": {
+          "package_name": "microsleader.george.myvehiclesinfo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "861107820797-sk3ltj07a8ag2psheu16ci2f2ithtudb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "microsleader.george.myvehiclesinfo",
+            "certificate_hash": "d7657310505dd7e1b9cb53e31e3bac4d72a4002f"
+          }
+        },
+        {
+          "client_id": "861107820797-9d0jm07mitg68jns6p1rqvv93777jf5v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8jLzgaOsBhi5oRZFjUVWQKD6Y80awMck"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "861107820797-9d0jm07mitg68jns6p1rqvv93777jf5v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

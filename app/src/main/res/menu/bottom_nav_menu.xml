@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/history"
+        android:icon="@drawable/history_24"
+        android:title="History"/>
+
+    <item
+        android:id="@+id/xaxaxaxa"
+        android:icon="@drawable/history_24"
+        android:title="xaxaxaxa"/>
+
+
+    <item
+        android:id="@+id/placeholder"
+        android:title=""/>
+
+
+    <item
+        android:id="@+id/person"
+        android:icon="@drawable/person_24"
+        android:title="Profile"/>
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/settings_24"
+        android:title="Settings"/>
+
+
+
+</menu>
