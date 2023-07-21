@@ -10,6 +10,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import com.example.myvehicleinfojava.R;
 import com.example.myvehicleinfojava.Utils;
+import com.example.myvehicleinfojava.classes.Gas;
+import com.example.myvehicleinfojava.classes.Repair;
+import com.example.myvehicleinfojava.firebaseClasses.Categories;
 import com.example.myvehicleinfojava.listeners.GeneralListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,12 +51,10 @@ public class AddGasDialog  {
             gasMap.put("litres", Utils.checkAndParseDouble(litresET.getText().toString()));
             gasMap.put("money", Utils.checkAndParseDouble(moneyET.getText().toString()));
             gasMap.put("date",Utils.convertToTimestamp(dateTV.getText().toString()));
-//            if (dateTV.getText().toString().isEmpty())
-//                gasMap.put("date", FieldValue.serverTimestamp());
-//            else
-//                gasMap.put("date", Utils.convertToTimestamp());
+            gasMap.put(Gas.colNames.CATEGORY_ID, Categories.GAS);
 
-            db.collection("Gas").document()
+
+            db.collection("History").document()
                     .set(gasMap)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

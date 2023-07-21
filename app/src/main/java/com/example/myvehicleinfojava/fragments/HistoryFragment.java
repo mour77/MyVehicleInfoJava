@@ -3,44 +3,36 @@ package com.example.myvehicleinfojava.fragments;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.example.myvehicleinfojava.classes.History;
+import com.example.myvehicleinfojava.classes.Repair;
+import com.example.myvehicleinfojava.firebaseClasses.Collections;
 import com.example.myvehicleinfojava.HistoryRVAdapter;
 import com.example.myvehicleinfojava.MainActivity;
-import com.example.myvehicleinfojava.R;
-import com.example.myvehicleinfojava.Utils;
 import com.example.myvehicleinfojava.classes.Gas;
-import com.example.myvehicleinfojava.classes.Vehicle;
 import com.example.myvehicleinfojava.databinding.FragmentHistoryBinding;
+import com.example.myvehicleinfojava.listeners.GeneralListener;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.EventListener;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
-public class HistoryFragment extends Fragment {
+public class HistoryFragment extends Fragment implements GeneralListener {
 
     MainActivity main;
     FragmentHistoryBinding bd ;
@@ -60,13 +52,6 @@ public class HistoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         main = (MainActivity) getActivity();
-        if (main != null)
-            db = main.db;
-
-
-
-
-
 
     }
 
@@ -76,44 +61,77 @@ public class HistoryFragment extends Fragment {
         bd = FragmentHistoryBinding.inflate(inflater, container, false);
         View view = bd.getRoot();
 
+        db = FirebaseFirestore.getInstance();
         bd.rv.setLayoutManager(new LinearLayoutManager(main));
 
-        getVehicleInfoRV();
-      //  bd.autoCompleteTextView.setAdapter();
+        Query query = getQueryBasedOnFilter(main.vehicleID);
+        updateAdapter(query);
+
+        bd.rv.setAdapter(adapter);
+
         return view;
     }
 
 
 
 
-    public void getVehicleInfoRV() {
 
-        Query query = FirebaseFirestore.getInstance()
-                .collection("Gas")
-                //.whereEqualTo("vehicleID", main.vehicleID)
-                .whereEqualTo("vehicleID", main.vehicleID)
-                //VL0VuEApbxZ092kuoGps
-                //
-                .orderBy("date")
-                //.limit(50)
-                ;
 
-        FirestoreRecyclerOptions<Gas> options = new
-                FirestoreRecyclerOptions.Builder<Gas>()
-                .setQuery(query, Gas.class)
+    private Query getQueryBasedOnFilter(String selectedVehicleID) {
+
+//        Task<QuerySnapshot> firstTask = db.collection("History").whereEqualTo(Gas.colNames.VEHICLE_ID, selectedVehicleID).orderBy(Gas.colNames.DATE).get();
+//        Task<QuerySnapshot> secondTask = db.collection("History").whereEqualTo(Repair.colNames.VEHICLE_ID, selectedVehicleID).orderBy(Gas.colNames.DATE).get();
+//
+//        Task<List<Object>> combinedTask = Tasks.whenAllSuccess(firstTask, secondTask).addOnSuccessListener(new OnSuccessListener<List<Object>>() {
+//            @Override
+//            public void onSuccess(List<Object> list) {
+//                //Do what you need to do with your list
+//                Toast.makeText(main, String.valueOf(list.size()), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//
+
+        return db.collection("History").whereEqualTo(Gas.colNames.VEHICLE_ID, selectedVehicleID).orderBy(Gas.colNames.DATE);
+    }
+
+    private void updateAdapter(Query query){
+        FirestoreRecyclerOptions<History> newOptions = new FirestoreRecyclerOptions.Builder<History>()
+                .setQuery(query, History.class)
                 .build();
 
-      //  adapter.cl
+        if (adapter == null)
+            adapter = new HistoryRVAdapter(newOptions);
+        else
+            adapter.updateOptions(newOptions);
+
+    }
 
 
-        if (adapter == null) {
-            adapter = new HistoryRVAdapter(options);
-            bd.rv.setAdapter(adapter);
-        }
-        else {
-            adapter.updateOptions(options);
-            adapter.notifyDataSetChanged();
-        }
+
+
+
+    @Override
+    public void sendResult(String result) {
+
+        Query query = getQueryBasedOnFilter(result);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    int currentSize = adapter.getItemCount();
+                    //tell the recycler view that all the old items are gone
+                    adapter.notifyItemRangeRemoved(0, currentSize);
+                    //tell the recycler view how many new items we added
+                    adapter.notifyItemRangeInserted(0, task.getResult().size());
+                    updateAdapter(query);
+
+                } else {
+                    Toast.makeText(main, "Ανεπιτυχής διαδικασία δεδομένων", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
 
     }
@@ -123,6 +141,7 @@ public class HistoryFragment extends Fragment {
     public void onStart() {
         super.onStart();
         adapter.startListening();
+
     }
 
     @Override
@@ -131,9 +150,6 @@ public class HistoryFragment extends Fragment {
         adapter.stopListening();
 
     }
-
-
-
 
 
 }

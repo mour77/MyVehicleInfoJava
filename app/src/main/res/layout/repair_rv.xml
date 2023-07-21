@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="3dp"
+    app:cardCornerRadius="12dp"
+    android:layout_margin="8dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardMaxElevation="2dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+
+        <TextView
+            android:id="@+id/descriptionTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:hint="litres"
+            android:drawablePadding="8dp"
+            android:textSize="18sp"
+
+            app:drawableStartCompat ="@drawable/gas_pump_24"
+
+            />
+
+
+        <TextView
+            android:id="@+id/moneyTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:hint="Money"
+            android:textSize="18sp"
+            android:drawablePadding="8dp"
+
+            app:drawableStartCompat ="@drawable/money_24" />
+
+
+
+
+        <TextView
+            android:id="@+id/dateTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:hint="Date"
+            android:drawablePadding="8dp"
+            android:textSize="18sp"
+            android:layout_marginBottom="12dp"
+            app:drawableStartCompat="@drawable/baseline_date_range_24" />
+
+
+
+
+        <TextView
+            android:id="@+id/kmTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:hint="litres"
+            android:drawablePadding="8dp"
+            android:textSize="18sp"
+
+            app:drawableStartCompat ="@drawable/gas_pump_24"
+
+            />
+
+
+
+
+        <TextView
+            android:id="@+id/remarksTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:hint="litres"
+            android:drawablePadding="8dp"
+            android:textSize="18sp"
+
+            app:drawableStartCompat ="@drawable/gas_pump_24"
+
+            />
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

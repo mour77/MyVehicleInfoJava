@@ -1,7 +1,4 @@
-package com.example.myvehicleinfojava;
-
-import android.content.Intent;
-import android.widget.Toast;
+package com.example.myvehicleinfojava.firebaseClasses;
 
 import androidx.annotation.NonNull;
 

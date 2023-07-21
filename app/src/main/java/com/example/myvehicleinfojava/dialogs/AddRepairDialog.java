@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 
 import com.example.myvehicleinfojava.R;
 import com.example.myvehicleinfojava.Utils;
+import com.example.myvehicleinfojava.classes.Repair;
+import com.example.myvehicleinfojava.firebaseClasses.Categories;
 import com.example.myvehicleinfojava.listeners.GeneralListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,14 +27,17 @@ public class AddRepairDialog {
 
     public static void show(Activity act , String vehicleID, GeneralListener listener){
         AlertDialog.Builder builder = new AlertDialog.Builder(act);
-        builder.setTitle("Επισκευή");
+       // builder.setTitle(Collections.REPAIRS.text);
+        builder.setTitle("repair");
 
         // set the custom layout
         final View customLayout = act.getLayoutInflater().inflate(R.layout.add_repair_dialog, null);
         builder.setView(customLayout);
         EditText descriptionET = customLayout.findViewById(R.id.descriptionET);
         EditText moneyET = customLayout.findViewById(R.id.moneyET);
+        EditText odometerET = customLayout.findViewById(R.id.odometerET);
         TextView dateTV = customLayout.findViewById(R.id.dateTV);
+        EditText remarksET = customLayout.findViewById(R.id.remarksET);
         dateTV.setText(Utils.getCurrentDate());
         Utils.setDatePicker(act,dateTV);
 
@@ -44,18 +49,18 @@ public class AddRepairDialog {
             FirebaseUser user = mAuth.getCurrentUser();
 
             Map<String, Object> repairMap = new HashMap<>();
-            repairMap.put("uid", user.getUid());
-            repairMap.put("vehicleID", vehicleID);
+            repairMap.put(Repair.colNames.UID, user.getUid());
+            repairMap.put(Repair.colNames.VEHICLE_ID, vehicleID);
 
-            repairMap.put("description", descriptionET.getText().toString());
-            repairMap.put("money", Utils.checkAndParseDouble(moneyET.getText().toString()));
-            repairMap.put("date",Utils.convertToTimestamp(dateTV.getText().toString()));
-//            if (dateTV.getText().toString().isEmpty())
-//                gasMap.put("date", FieldValue.serverTimestamp());
-//            else
-//                gasMap.put("date", Utils.convertToTimestamp());
+            repairMap.put(Repair.colNames.DESCRIPTION, descriptionET.getText().toString());
+            repairMap.put(Repair.colNames.MONEY, Utils.checkAndParseDouble(moneyET.getText().toString()));
+            repairMap.put(Repair.colNames.ODOMETER, Utils.checkAndParseInteger(odometerET.getText().toString().trim()));
+            repairMap.put(Repair.colNames.DATE,Utils.convertToTimestamp(dateTV.getText().toString()));
+            repairMap.put(Repair.colNames.REMARKS, remarksET.getText().toString().trim());
+            repairMap.put(Repair.colNames.CATEGORY_ID, Categories.REPAIR);
 
-            db.collection("Repairs").document()
+
+            db.collection("History").document()
                     .set(repairMap)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

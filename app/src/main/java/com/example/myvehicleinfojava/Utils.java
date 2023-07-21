@@ -86,8 +86,14 @@ public class Utils {
     public static Double checkAndParseDouble(String txt){
        if (txt == null || txt.isEmpty())
            return 0.0;
-
        return Double.parseDouble(txt);
+
+    }
+
+    public static Integer checkAndParseInteger(String txt){
+        if (txt == null || txt.isEmpty())
+            return 0;
+        return Integer.parseInt(txt);
 
     }
 

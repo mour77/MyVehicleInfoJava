@@ -200,9 +200,11 @@ public class MainActivity extends AppCompatActivity {
         bd.addGasFab.setOnClickListener(v -> AddGasDialog.show(MainActivity.this, vehicleID, result -> {
             resultFromDialog = result;
         }));
-        bd.addRepairFab.setOnClickListener(v -> AddRepairDialog.show(MainActivity.this, vehicleID, result -> {
-            resultFromDialog = result;
-        }));
+        bd.addRepairFab.setOnClickListener(v ->
+      //          startActivity(new Intent(MainActivity.this,TestActivity.class))
+                AddRepairDialog.show(MainActivity.this, vehicleID, result -> {
+                resultFromDialog = result;})
+            );
     }
 
 
@@ -255,9 +257,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                HistoryFragment his = (HistoryFragment) active;
-                his.getVehicleInfoRV();
-                Toast.makeText(MainActivity.this, vehicleID, Toast.LENGTH_SHORT).show();
+
+                if (active instanceof HistoryFragment){
+                    GeneralListener x = (GeneralListener) active;
+                    x.sendResult(vehicleID);
+                }
 
             }
         });

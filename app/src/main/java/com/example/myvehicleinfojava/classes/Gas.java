@@ -14,9 +14,10 @@ public class Gas {
 
 
 
+
     public String uid;
     public double money, litres;
-@ServerTimestamp
+    @ServerTimestamp
     public Timestamp date;
 
 
@@ -33,6 +34,16 @@ public class Gas {
 
     }
 
+
+    public static class colNames{
+        public static final String LITRES = "litres";
+        public static final String MONEY = "money";
+        public static final String DATE = "date";
+        public static final String UID = "uid";
+        public static final String VEHICLE_ID = "vehicleID";
+        public static final String CATEGORY_ID = "categoryID";
+
+    }
 
 
 }
