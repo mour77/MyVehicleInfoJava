@@ -18,28 +18,36 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.example.myvehicleinfojava.classes.Gas;
 import com.example.myvehicleinfojava.classes.Vehicle;
 import com.example.myvehicleinfojava.databinding.ActivityMainBinding;
 import com.example.myvehicleinfojava.dialogs.AddGasDialog;
 import com.example.myvehicleinfojava.dialogs.AddRepairDialog;
+import com.example.myvehicleinfojava.dialogs.AddVehicleDialog;
+import com.example.myvehicleinfojava.firebaseClasses.Categories;
 import com.example.myvehicleinfojava.fragments.HistoryFragment;
 import com.example.myvehicleinfojava.fragments.ProfileFragment;
 import com.example.myvehicleinfojava.fragments.SettingsFragment;
 import com.example.myvehicleinfojava.fragments.TestFragment;
 import com.example.myvehicleinfojava.listeners.GeneralListener;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -88,6 +96,15 @@ public class MainActivity extends AppCompatActivity {
 
         manageFragments();
 
+
+        bd.addVehicleBT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddVehicleDialog.show(MainActivity.this,  result -> {resultFromDialog = result;});
+
+
+            }
+        });
 
 
     }
@@ -197,18 +214,20 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
-        bd.addGasFab.setOnClickListener(v -> AddGasDialog.show(MainActivity.this, vehicleID, result -> {
-            resultFromDialog = result;
-        }));
-        bd.addRepairFab.setOnClickListener(v ->
-      //          startActivity(new Intent(MainActivity.this,TestActivity.class))
-                AddRepairDialog.show(MainActivity.this, vehicleID, result -> {
-                resultFromDialog = result;})
-            );
+        bd.addGasFab.setOnClickListener(v -> {
+            if (!isVehicleIDEmptyAndToast())
+                AddGasDialog.show(MainActivity.this, vehicleID, result -> {resultFromDialog = result;});
+        });
+
+
+        bd.addRepairFab.setOnClickListener(v ->{
+            if (!isVehicleIDEmptyAndToast())
+                AddRepairDialog.show(MainActivity.this, vehicleID, result -> {resultFromDialog = result;});
+        });
     }
 
 
-    private void getBrands() {
+    public void getBrands() {
         db.collection("Vehicles").whereEqualTo("userID", uid)
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -273,5 +292,13 @@ public class MainActivity extends AppCompatActivity {
             bd.autoCompleteTextView.setText(brandsModels.get(0) , false);
             vehicleID = vehicles.get(0).vehicleID;
         }
+    }
+
+    private boolean isVehicleIDEmptyAndToast(){
+        if (vehicleID.isEmpty()){
+            Toast.makeText(this, "Δεν υπάρχει επιλεγμένο αυτοκίνητο", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return false;
     }
 }
