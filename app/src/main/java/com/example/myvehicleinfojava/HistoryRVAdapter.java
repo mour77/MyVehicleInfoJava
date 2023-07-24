@@ -63,6 +63,7 @@ public class HistoryRVAdapter extends FirestoreRecyclerAdapter<History, HistoryR
 
         if (model.categoryID == Categories.GAS){
             holder.litresTV.setText(String.valueOf(model.litres));
+            holder.kmTV.setText(String.valueOf(model.odometer));
         }
 
         else if (model.categoryID == Categories.REPAIR){

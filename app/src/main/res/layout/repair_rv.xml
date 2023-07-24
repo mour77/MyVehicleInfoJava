@@ -15,91 +15,117 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
         android:orientation="vertical">
-
-
 
 
         <TextView
             android:id="@+id/descriptionTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:hint="litres"
-            android:drawablePadding="8dp"
-            android:textSize="18sp"
-
-            app:drawableStartCompat ="@drawable/gas_pump_24"
-
-            />
-
-
-        <TextView
-            android:id="@+id/moneyTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:hint="description"
+            android:textStyle="bold"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
-            android:hint="Money"
+
+            android:textColor="@color/teal_700"
+
             android:textSize="18sp"
-            android:drawablePadding="8dp"
-
-            app:drawableStartCompat ="@drawable/money_24" />
+            app:drawableStartCompat="@drawable/repair_32" />
 
 
-
-
-        <TextView
-            android:id="@+id/dateTV"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:hint="Date"
-            android:drawablePadding="8dp"
-            android:textSize="18sp"
-            android:layout_marginBottom="12dp"
-            app:drawableStartCompat="@drawable/baseline_date_range_24" />
+            android:layout_height="match_parent"
+            android:padding="3dp"
+
+            >
+
+
+            <TextView
+                android:id="@+id/moneyTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
+                android:drawablePadding="8dp"
+                android:hint="Money"
+
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+
+                android:textSize="18sp"
+                app:drawableStartCompat="@drawable/money_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dateTV" />
+
+            <TextView
+                android:id="@+id/dateTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="36dp"
+                android:drawablePadding="8dp"
+                android:hint="Date"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:textSize="18sp"
+                app:drawableStartCompat="@drawable/baseline_date_range_24"
+                app:layout_constraintBottom_toTopOf="@+id/remarksTV"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/remarksTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:drawablePadding="8dp"
+
+                android:hint="remarks"
+
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:textSize="18sp"
+                app:drawableStartCompat="@drawable/comments_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/kmTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:drawablePadding="8dp"
+                android:hint="km"
+
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:textSize="18sp"
+                app:drawableStartCompat="@drawable/odometer_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/remarksTV" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
 
-        <TextView
-            android:id="@+id/kmTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:hint="litres"
-            android:drawablePadding="8dp"
-            android:textSize="18sp"
-
-            app:drawableStartCompat ="@drawable/gas_pump_24"
-
-            />
 
 
 
 
-        <TextView
-            android:id="@+id/remarksTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:hint="litres"
-            android:drawablePadding="8dp"
-            android:textSize="18sp"
 
-            app:drawableStartCompat ="@drawable/gas_pump_24"
 
-            />
+
+
+
 
 
     </LinearLayout>
