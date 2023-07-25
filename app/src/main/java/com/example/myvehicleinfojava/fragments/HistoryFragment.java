@@ -12,8 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.myvehicleinfojava.classes.History;
-import com.example.myvehicleinfojava.classes.Repair;
-import com.example.myvehicleinfojava.firebaseClasses.Collections;
 import com.example.myvehicleinfojava.HistoryRVAdapter;
 import com.example.myvehicleinfojava.MainActivity;
 import com.example.myvehicleinfojava.classes.Gas;
@@ -21,15 +19,12 @@ import com.example.myvehicleinfojava.databinding.FragmentHistoryBinding;
 import com.example.myvehicleinfojava.listeners.GeneralListener;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.List;
 
 
 public class HistoryFragment extends Fragment implements GeneralListener {
@@ -64,7 +59,7 @@ public class HistoryFragment extends Fragment implements GeneralListener {
         db = FirebaseFirestore.getInstance();
         bd.rv.setLayoutManager(new LinearLayoutManager(main));
 
-        Query query = getQueryBasedOnFilter(main.vehicleID);
+        Query query = getQueryHistoryBasedOnFilter(main.vehicleID);
         updateAdapter(query);
 
         bd.rv.setAdapter(adapter);
@@ -74,25 +69,38 @@ public class HistoryFragment extends Fragment implements GeneralListener {
 
 
 
+    public void setFilteredHistoryAdapter(Integer[] categoryIDs){
+
+        Query query = getQueryHistoryBasedOnFilter(main.vehicleID, categoryIDs);
+        setQueryCompleteLsitenerAndUpdate(query);
+
+
+    }
+
+    private Query getQueryHistoryBasedOnFilter(String selectedVehicleID){
+        return getQueryHistoryBasedOnFilter(selectedVehicleID , null);
+    }
 
 
 
-    private Query getQueryBasedOnFilter(String selectedVehicleID) {
+    private Query getQueryHistoryBasedOnFilter(String selectedVehicleID, Integer [] filteredCategoryIDs) {
 
-//        Task<QuerySnapshot> firstTask = db.collection("History").whereEqualTo(Gas.colNames.VEHICLE_ID, selectedVehicleID).orderBy(Gas.colNames.DATE).get();
-//        Task<QuerySnapshot> secondTask = db.collection("History").whereEqualTo(Repair.colNames.VEHICLE_ID, selectedVehicleID).orderBy(Gas.colNames.DATE).get();
-//
-//        Task<List<Object>> combinedTask = Tasks.whenAllSuccess(firstTask, secondTask).addOnSuccessListener(new OnSuccessListener<List<Object>>() {
-//            @Override
-//            public void onSuccess(List<Object> list) {
-//                //Do what you need to do with your list
-//                Toast.makeText(main, String.valueOf(list.size()), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//
+        CollectionReference historyRef = db.collection("History");
+        Query query = historyRef.whereEqualTo(Gas.colNames.VEHICLE_ID, selectedVehicleID);
 
-        return db.collection("History").whereEqualTo(Gas.colNames.VEHICLE_ID, selectedVehicleID).orderBy(Gas.colNames.DATE);
+
+        if (filteredCategoryIDs != null && filteredCategoryIDs.length > 0) {
+            Filter[] filters = new Filter[filteredCategoryIDs.length];
+            for (int i = 0; i<filteredCategoryIDs.length; i++) {
+                int categoryID = filteredCategoryIDs[i];
+                filters[i] = Filter.equalTo("categoryID", categoryID);
+            }
+            query = query.where(Filter.or(filters));
+        }
+        query.orderBy(Gas.colNames.DATE);
+
+        return query;
+       // return db.collection("History").whereEqualTo(Gas.colNames.VEHICLE_ID, selectedVehicleID).orderBy(Gas.colNames.DATE);
     }
 
     private void updateAdapter(Query query){
@@ -114,7 +122,18 @@ public class HistoryFragment extends Fragment implements GeneralListener {
     @Override
     public void sendResult(String result) {
 
-        Query query = getQueryBasedOnFilter(result);
+        Query query = getQueryHistoryBasedOnFilter(result);
+        setQueryCompleteLsitenerAndUpdate(query);
+
+
+    }
+
+    private void setQueryCompleteLsitenerAndUpdate(Query query){
+
+        /*
+        ΤΟ ΧΡΗΣΙΜΟΠΟΙΩ ΜΕ ΑΥΤΟΝ ΤΡΟΠΟ ΕΠΕΙΔΗ ΟΤΑΝ ΓΙΝΕΤΑΙ ΦΙΛΤΡΑΡΙΣΜΑ ΚΑΙ ΚΑΛΕΣΜΑ ΑΠΟ ΑΛΛΟ ΑΚΤΙΒΙΤΥ Η ΦΡΑΓΚΕΜΝΤ ΧΤΥΠΑΕΙ
+        ΕΝΩ ΜΕ ΑΥΤΟΝ ΤΟΝ ΤΡΟΠΟ ΕΙΝΑΙ ΟΚ
+         */
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -132,8 +151,6 @@ public class HistoryFragment extends Fragment implements GeneralListener {
                 }
             }
         });
-
-
     }
 
 

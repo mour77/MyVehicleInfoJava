@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -124,8 +126,23 @@ public class LoginActivity extends AppCompatActivity {
                                                 userMap.put("photoUrl", googleSignInAccount.getPhotoUrl());
                                                 userMap.put("serverAuthCode", googleSignInAccount.getServerAuthCode());
 
+                                                FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<String> task) {
+                                                        if (!task.isSuccessful()) {
+                                                            Log.w("eleos", "Fetching FCM registration token failed", task.getException());
+                                                            return;
+                                                        }
+                                                        String token = task.getResult();
+                                                        Map<String, Object> map = new HashMap<>();
+                                                        map.put("token", token);
+                                                        db.collection("Users").document(uid)
+                                                                .update(map);
+                                                    }
+                                                });
+
                                                 db.collection("Users").document(uid)
-                                                        .set(userMap)
+                                                        .update(userMap)
                                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                             @Override
                                                             public void onSuccess(Void aVoid) {

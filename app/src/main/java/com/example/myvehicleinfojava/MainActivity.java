@@ -24,12 +24,14 @@ import com.example.myvehicleinfojava.databinding.ActivityMainBinding;
 import com.example.myvehicleinfojava.dialogs.AddGasDialog;
 import com.example.myvehicleinfojava.dialogs.AddRepairDialog;
 import com.example.myvehicleinfojava.dialogs.AddVehicleDialog;
+import com.example.myvehicleinfojava.dialogs.FilterHistoryDialog;
 import com.example.myvehicleinfojava.firebaseClasses.Categories;
 import com.example.myvehicleinfojava.fragments.HistoryFragment;
 import com.example.myvehicleinfojava.fragments.ProfileFragment;
 import com.example.myvehicleinfojava.fragments.SettingsFragment;
 import com.example.myvehicleinfojava.fragments.TestFragment;
 import com.example.myvehicleinfojava.listeners.GeneralListener;
+import com.example.myvehicleinfojava.listeners.HistoryFilterListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,12 +41,15 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,7 +126,19 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected( @NonNull MenuItem item ) {
 
         if (item.getItemId() == R.id.filter){
+            FilterHistoryDialog.show(this, new HistoryFilterListener() {
+                @Override
+                public void sendFilteredCategoryIDs(Integer[] categoryIDs) {
+                   // String [] idsStr = result.replace("[","").replace("]","").split(",");
+                    //int [] categoryIDs = Arrays.stream(idsStr).mapToInt(Integer::parseInt).toArray();
+                    if (active instanceof HistoryFragment){
+                        historyFragment.setFilteredHistoryAdapter(categoryIDs);
+                    }
 
+                }
+
+
+            });
         }
 
         else if (item.getItemId() == R.id.logout) {
@@ -231,9 +248,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
+
+
     public void getBrands() {
+
         db.collection("Vehicles").whereEqualTo("userID", uid)
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
