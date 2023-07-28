@@ -1,8 +1,10 @@
 package com.example.myvehicleinfojava;
 
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,6 +53,7 @@ public class HistoryRVAdapter extends FirestoreRecyclerAdapter<History, HistoryR
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gas_rv, parent, false);
 
 
+
         return new ViewHolder(view);
     }
 
@@ -70,7 +73,20 @@ public class HistoryRVAdapter extends FirestoreRecyclerAdapter<History, HistoryR
             holder.descriptionTV.setText(model.description);
             holder.kmTV.setText(String.valueOf(model.odometer));
             holder.remarksTV.setText(String.valueOf(model.remarks));
+
+            holder.mapBT.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    String latitude = model.mapInfo.latitude;
+//                    String longitude = model.mapInfo.longitude;
+
+
+
+                }
+            });
         }
+
+
 
     }
 
@@ -78,9 +94,11 @@ public class HistoryRVAdapter extends FirestoreRecyclerAdapter<History, HistoryR
 
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView litresTV, moneyTV ,descriptionTV ,remarksTV;
         TextView dateTV , kmTV;
+
+        ImageButton mapBT;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -92,6 +110,9 @@ public class HistoryRVAdapter extends FirestoreRecyclerAdapter<History, HistoryR
             descriptionTV = itemView.findViewById(R.id.descriptionTV);
             remarksTV = itemView.findViewById(R.id.remarksTV);
             kmTV = itemView.findViewById(R.id.kmTV);
+            mapBT = itemView.findViewById(R.id.mapBT);
+
+
 
 
         }

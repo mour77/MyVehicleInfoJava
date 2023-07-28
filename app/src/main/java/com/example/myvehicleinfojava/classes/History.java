@@ -19,6 +19,7 @@ public class History {
     @ServerTimestamp
     public Timestamp date;
 
+    public MapInfo mapInfo;
 
     public int categoryID;
     public History(){
@@ -30,6 +31,11 @@ public class History {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", new Locale("el", "GR") );
         return dateFormat.format(d);
 
+    }
+
+    public static class MapInfo{
+        public String latitude , longitude;
+        public String mechanicName , remarks;
     }
 
 }

@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.myvehicleinfojava.MainActivity;
 import com.example.myvehicleinfojava.R;
 import com.example.myvehicleinfojava.Utils;
 import com.example.myvehicleinfojava.classes.Repair;
@@ -19,6 +20,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,8 +41,15 @@ public class AddRepairDialog {
         EditText odometerET = customLayout.findViewById(R.id.odometerET);
         TextView dateTV = customLayout.findViewById(R.id.dateTV);
         EditText remarksET = customLayout.findViewById(R.id.remarksET);
+        TextView mapTV = customLayout.findViewById(R.id.mapTV);
         dateTV.setText(Utils.getCurrentDate());
         Utils.setDatePicker(act,dateTV);
+        mapTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setMap(act);
+            }
+        });
 
         // add a button
         builder.setPositiveButton("OK", (dialog, which) -> {
@@ -80,5 +90,18 @@ public class AddRepairDialog {
         // create and show the alert dialog
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+
+    private static void setMap(Activity act){
+        MapDialog x = new MapDialog();
+
+        x.show(act, new GeneralListener() {
+            @Override
+            public void sendResult(String result) {
+
+            }
+        });
+
     }
 }

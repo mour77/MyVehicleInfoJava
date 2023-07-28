@@ -18,4 +18,6 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="successful_save">Αποθηκεύτηκε</string>
     <string name="error_save">Σφάλμα κατά την αποθήκευση</string>
+    <string name="mpaID">b6017353eaf6f077</string>
+    <string name="API_KEY">AIzaSyDwHiJe1NigNgLb5jtrkTrjQlbYHjw1SIM</string>
 </resources>

@@ -119,7 +119,8 @@
                 android:background="@null"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/map_64" />
+                app:srcCompat="@drawable/map_64"
+                tools:ignore="SpeakableTextPresentCheck" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ package com.example.myvehicleinfojava;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -15,7 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 import android.widget.Toolbar;
 
 import com.example.myvehicleinfojava.classes.Gas;
@@ -73,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     public String uid;
     public String vehicleID = "";
 
-
+    ActionMenuItemView filterMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,12 +115,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+
+
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -162,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 if (itemID == R.id.history) {
                     active = historyFragment;
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, historyFragment).commit();
+                    showMainActivitiesChilds();
                     return true;
                 }
                 else if (itemID == R.id.xaxaxaxa){
@@ -177,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
                 else if (itemID == R.id.settings){
                     active = settingsFragment;
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,settingsFragment).commit();
+                    hideMainActivitiesChilds();
                     return true;
                 }
 
@@ -327,5 +335,26 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    private void hideMainActivitiesChilds(){
+        bd.autoCompleteTextView.setVisibility(View.GONE);
+        bd.textInputLayout.setVisibility(View.GONE);
+        bd.addVehicleBT.setVisibility(View.GONE);
+        filterMenuItem = findViewById(R.id.filter);
+
+        filterMenuItem.setVisibility(View.GONE);
+
+    }
+
+    private void showMainActivitiesChilds(){
+        bd.autoCompleteTextView.setVisibility(View.VISIBLE);
+        bd.textInputLayout.setVisibility(View.VISIBLE);
+
+        bd.addVehicleBT.setVisibility(View.VISIBLE);
+        filterMenuItem = findViewById(R.id.filter);
+
+        filterMenuItem.setVisibility(View.VISIBLE);
+
     }
 }
