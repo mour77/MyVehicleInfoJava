@@ -231,7 +231,7 @@ public class HistoryFragment extends Fragment implements GeneralListener , View.
     public void onStart() {
         super.onStart();
 
-        adapter.opt.startListening();
+        //adapter.opt.startListening();
 
     }
 
