@@ -74,16 +74,7 @@ public class HistoryRVAdapter extends FirestoreRecyclerAdapter<History, HistoryR
             holder.kmTV.setText(String.valueOf(model.odometer));
             holder.remarksTV.setText(String.valueOf(model.remarks));
 
-            holder.mapBT.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    String latitude = model.mapInfo.latitude;
-//                    String longitude = model.mapInfo.longitude;
 
-
-
-                }
-            });
         }
 
 
@@ -98,7 +89,6 @@ public class HistoryRVAdapter extends FirestoreRecyclerAdapter<History, HistoryR
         TextView litresTV, moneyTV ,descriptionTV ,remarksTV;
         TextView dateTV , kmTV;
 
-        ImageButton mapBT;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -110,7 +100,6 @@ public class HistoryRVAdapter extends FirestoreRecyclerAdapter<History, HistoryR
             descriptionTV = itemView.findViewById(R.id.descriptionTV);
             remarksTV = itemView.findViewById(R.id.remarksTV);
             kmTV = itemView.findViewById(R.id.kmTV);
-            mapBT = itemView.findViewById(R.id.mapBT);
 
 
 

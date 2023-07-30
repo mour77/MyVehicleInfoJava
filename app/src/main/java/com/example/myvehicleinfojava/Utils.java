@@ -4,20 +4,29 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
 
+import androidx.fragment.app.FragmentManager;
+
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.firebase.Timestamp;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-
+import androidx.core.util.Pair;
 public class Utils {
 
    public static void setDatePicker(Context ctx, TextView tv){
@@ -44,7 +53,7 @@ public class Utils {
                            public void onDateSet(DatePicker view, int year,
                                                  int monthOfYear, int dayOfMonth) {
                                // on below line we are setting date to our text view.
-                               tv.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                               tv.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
 
                            }
                        },
@@ -58,11 +67,40 @@ public class Utils {
        });
    }
 
+
+   public static void setPeriodPicker(FragmentManager frg , TextView tv){
+       MaterialDatePicker.Builder<Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
+       builder.setTitleText("Select a date range");
+
+       // Building the date picker dialog
+       MaterialDatePicker<Pair<Long, Long>> datePicker = builder.build();
+       datePicker.addOnPositiveButtonClickListener(selection -> {
+
+           // Retrieving the selected start and end dates
+           Long startDate = selection.first;
+           Long endDate = selection.second;
+
+           // Formating the selected dates as strings
+           SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+           String startDateString = sdf.format(new Date(startDate));
+           String endDateString = sdf.format(new Date(endDate));
+
+           // Creating the date range string
+           String selectedDateRange = startDateString + " - " + endDateString;
+
+           // Displaying the selected date range in the TextView
+           tv.setText(selectedDateRange);
+       });
+
+       // Showing the date picker dialog
+       datePicker.show(frg, "DATE_PICKER");
+   }
+
    public static Timestamp convertToTimestamp(String dateStr){
 
        //Date string with offset information
        //String dateString = "03-08-2019";
-       DateFormat dateFormat = new SimpleDateFormat("dd-M-yyyy");
+       DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
        try {
 
            Date date = dateFormat.parse(dateStr);
@@ -78,7 +116,7 @@ public class Utils {
 
    public static String getCurrentDate(){
        Date c = Calendar.getInstance().getTime();
-       SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+       SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
        return df.format(c);
    }
 
@@ -97,4 +135,36 @@ public class Utils {
 
     }
 
+
+
+
+    public static String loadJSONFromAsset(Activity act, String pathFile) {
+        String json = null;
+        try {
+            InputStream is = act.getAssets().open(pathFile);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, StandardCharsets.UTF_8);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
+
+
+
+    public static Drawable loadImageFromAssets(Context ctx, String path) {
+        try {
+            InputStream ims = null;
+            ims = ctx.getAssets().open(path);
+            return Drawable.createFromStream(ims, null);
+
+        } catch (IOException e) {
+            return null;
+        }
+    }
 }

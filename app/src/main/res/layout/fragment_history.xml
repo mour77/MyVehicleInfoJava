@@ -7,11 +7,71 @@
     tools:context=".fragments.HistoryFragment">
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+
+                        <TextView
+                            android:id="@+id/periodTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="Επιλογή περιόδου"
+                            android:drawablePadding = "8dp"
+
+                            android:textSize="14sp"
+
+                            android:padding="8dp"
+                            android:gravity="center"
+                            app:drawableLeftCompat="@drawable/baseline_date_range_24" />
+
+
+                        <ImageButton
+                            android:id="@+id/clearIBT"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/cancel_24"
+                            android:background="@drawable/transparent_background"
+
+                            >
+
+                        </ImageButton>
+
+                        <TextView
+                            android:id="@+id/totalCostTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="32dp"
+                            android:layout_marginEnd="22dp"
+                            android:drawablePadding = "12dp"
+
+                            android:drawableLeft="@drawable/money_bag_24"
+                            android:textSize="18dp"
+
+                            android:padding="8dp"
+                            >
+                        </TextView>
+                </LinearLayout>
+
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            />
+                >
+
+        </LinearLayout>
+
+
 
 </FrameLayout>

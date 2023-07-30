@@ -16,19 +16,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.Toast;
-import android.widget.ToggleButton;
-import android.widget.Toolbar;
 
-import com.example.myvehicleinfojava.classes.Gas;
 import com.example.myvehicleinfojava.classes.Vehicle;
 import com.example.myvehicleinfojava.databinding.ActivityMainBinding;
 import com.example.myvehicleinfojava.dialogs.AddGasDialog;
 import com.example.myvehicleinfojava.dialogs.AddRepairDialog;
 import com.example.myvehicleinfojava.dialogs.AddVehicleDialog;
 import com.example.myvehicleinfojava.dialogs.FilterHistoryDialog;
-import com.example.myvehicleinfojava.firebaseClasses.Categories;
 import com.example.myvehicleinfojava.fragments.HistoryFragment;
 import com.example.myvehicleinfojava.fragments.ProfileFragment;
 import com.example.myvehicleinfojava.fragments.SettingsFragment;
@@ -36,31 +31,20 @@ import com.example.myvehicleinfojava.fragments.TestFragment;
 import com.example.myvehicleinfojava.listeners.GeneralListener;
 import com.example.myvehicleinfojava.listeners.HistoryFilterListener;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     final HistoryFragment historyFragment = new HistoryFragment();
-    final TestFragment testFragment = new TestFragment();
     final ProfileFragment profileFragment = new ProfileFragment();
     final SettingsFragment settingsFragment = new SettingsFragment();
     final FragmentManager fm = getSupportFragmentManager();
@@ -75,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     public FirebaseFirestore db;
     public String uid;
     public String vehicleID = "";
+    public Integer[] maincategoryIDs;
 
     ActionMenuItemView filterMenuItem;
 
@@ -133,12 +118,16 @@ public class MainActivity extends AppCompatActivity {
 
         if (item.getItemId() == R.id.filter){
             FilterHistoryDialog.show(this, new HistoryFilterListener() {
+
                 @Override
                 public void sendFilteredCategoryIDs(Integer[] categoryIDs) {
                    // String [] idsStr = result.replace("[","").replace("]","").split(",");
-                    //int [] categoryIDs = Arrays.stream(idsStr).mapToInt(Integer::parseInt).toArray();
+                    maincategoryIDs = categoryIDs;
                     if (active instanceof HistoryFragment){
-                        historyFragment.setFilteredHistoryAdapter(categoryIDs);
+                        Query query = historyFragment.getQueryHistory(vehicleID);
+                        historyFragment.setQueryCompleteLsitenerAndUpdate(query);
+
+                        //  historyFragment.setFilteredHistoryAdapter(maincategoryIDs);
                     }
 
                 }
@@ -166,24 +155,31 @@ public class MainActivity extends AppCompatActivity {
 
 
                 if (itemID == R.id.history) {
+                    changeFragment(historyFragment, null);
+                   // fm.beginTransaction().add(R.id.mainLayout, historyFragment, HistoryFragment.class.getSimpleName()).hide(active).commit();
                     active = historyFragment;
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, historyFragment).commit();
+                   // getSupportFragmentManager().beginTransaction().replace(R.id.container, historyFragment).commit();
                     showMainActivitiesChilds();
                     return true;
                 }
-                else if (itemID == R.id.xaxaxaxa){
-                    active = testFragment;
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container,testFragment).commit();
-                    return true;
-                }
+
                 else if (itemID == R.id.person){
+                    changeFragment(profileFragment, null);
+
+                   // fm.beginTransaction().add(R.id.mainLayout, profileFragment, ProfileFragment.class.getSimpleName()).hide(active).commit();
+
                     active = profileFragment;
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container,profileFragment).commit();
+                    //getSupportFragmentManager().beginTransaction().replace(R.id.container,profileFragment).commit();
                     return true;
                 }
                 else if (itemID == R.id.settings){
+
+                    changeFragment(settingsFragment, null);
+
+                  //  fm.beginTransaction().add(R.id.mainLayout, settingsFragment, SettingsFragment.class.getSimpleName()).hide(active).commit();
+
                     active = settingsFragment;
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container,settingsFragment).commit();
+                    //getSupportFragmentManager().beginTransaction().replace(R.id.container,settingsFragment).commit();
                     hideMainActivitiesChilds();
                     return true;
                 }
@@ -191,6 +187,16 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+
+    private void changeFragment(Fragment fragment, Bundle bundle) {
+        fm.beginTransaction()
+                .hide(active)
+                .show(fragment)
+                .commit();
+        active = fragment;
+        active.setArguments(bundle);
     }
 
 

@@ -6,15 +6,8 @@
         android:icon="@drawable/history_24"
         android:title="History"/>
 
-    <item
-        android:id="@+id/xaxaxaxa"
-        android:icon="@drawable/history_24"
-        android:title="xaxaxaxa"/>
 
 
-    <item
-        android:id="@+id/placeholder"
-        android:title=""/>
 
 
     <item

@@ -2,16 +2,20 @@ package com.example.myvehicleinfojava.dialogs;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
+import com.example.myvehicleinfojava.CustomListViewAdapter;
 import com.example.myvehicleinfojava.Utils;
 import com.example.myvehicleinfojava.classes.GasTypes;
 import com.example.myvehicleinfojava.MainActivity;
@@ -29,6 +33,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +50,8 @@ public class AddVehicleDialog {
     private static int gasTypeID = 0 ;
     private static String gasTypeIDStr = ""  ;
     private AutoCompleteTextView brandsATV;
+    static Brands selectedItem ;
+
     public static void show(Activity act , GeneralListener listener){
         db = FirebaseFirestore.getInstance();
 
@@ -53,6 +62,10 @@ public class AddVehicleDialog {
         final View customLayout = act.getLayoutInflater().inflate(R.layout.add_vehicle_dialog, null);
         builder.setView(customLayout);
         AutoCompleteTextView brandsATV = customLayout.findViewById(R.id.brandsATV);
+
+        Drawable newDrawable = ContextCompat.getDrawable(act, R.drawable.add_car_24);
+        brandsATV.setCompoundDrawablesRelativeWithIntrinsicBounds(newDrawable, null, null, null);
+
         EditText modelET = customLayout.findViewById(R.id.modelET);
         EditText kivikaET = customLayout.findViewById(R.id.kivikaET);
         EditText hpET = customLayout.findViewById(R.id.hpET);
@@ -63,8 +76,14 @@ public class AddVehicleDialog {
         EditText arKikloforiasET = customLayout.findViewById(R.id.arKikloforiasET);
         EditText vinET = customLayout.findViewById(R.id.vinET);
 
-        getBrands(brandsATV);
-        getGasTypes(typeGasATV);
+        try{
+            getBrands(act, brandsATV);
+            getGasTypes(typeGasATV);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
 
 
 
@@ -84,7 +103,7 @@ public class AddVehicleDialog {
             vehicleMap.put(Vehicle.colNames.USER_ID, user.getUid());
 
             vehicleMap.put(Vehicle.colNames.BRAND, brandName);
-            vehicleMap.put("brandIDStr", brandIDStr);
+            //vehicleMap.put("brandIDStr", brandIDStr);
 
             vehicleMap.put(Vehicle.colNames.MODEL, modelET.getText().toString().trim());
             vehicleMap.put(Vehicle.colNames.KIVIKA, Utils.checkAndParseInteger(kivikaET.getText().toString().trim()));
@@ -113,12 +132,7 @@ public class AddVehicleDialog {
 
                         }
                     })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(act, R.string.error_save, Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    .addOnFailureListener(e -> Toast.makeText(act, R.string.error_save, Toast.LENGTH_SHORT).show());
 
 
 
@@ -136,28 +150,41 @@ public class AddVehicleDialog {
     }
 
 
-    private static void getBrands(AutoCompleteTextView brandsATV) {
+    private static void getBrands(Activity act, AutoCompleteTextView brandsATV) throws JSONException {
 
+        String jsonStr = Utils.loadJSONFromAsset(act, "dataManufacturesLogos.json");
+        JSONArray info = new JSONArray(jsonStr);
 
+        List<Brands> brands = new ArrayList<>();
+        for (int i=0; i<info.length(); i++){
+            Brands b = new Brands();
+            String name = info.getJSONObject(i).getString("name");
+            String logoThumbStr = info.getJSONObject(i).getJSONObject("image").getString("localThumb");
+            b.name = name;
+            b.logoPathStr = logoThumbStr;
+            brands.add(b);
+        }
 
-        db.collection("Brands").orderBy("name")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            List<Brands> brands = new ArrayList<>();
-                            //List<String> brandsModels = new ArrayList<>();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
+        addListToBrandsDropDown(brandsATV , brands);
 
-                                Brands b = document.toObject(Brands.class);
-                                b.idStr = document.getId();
-                                brands.add(b);
-                                //brandsModels.add(b.name);
-                            }
-                            addListToBrandsDropDown(brandsATV , brands);
-                        }
-                    }
-                });
+//        db.collection("Brands").orderBy("name")
+//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            List<Brands> brands = new ArrayList<>();
+//                            //List<String> brandsModels = new ArrayList<>();
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//
+//                                Brands b = document.toObject(Brands.class);
+//                                b.idStr = document.getId();
+//                                brands.add(b);
+//                                //brandsModels.add(b.name);
+//                            }
+//                            addListToBrandsDropDown(brandsATV , brands);
+//                        }
+//                    }
+//                });
     }
 
 
@@ -167,38 +194,27 @@ public class AddVehicleDialog {
     private static void addListToBrandsDropDown(AutoCompleteTextView atv, List<Brands> brands){
 
 
-        atv.addTextChangedListener(new TextWatcher() {
+        atv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-
-                for (Brands b: brands){
-                    String bName = b.name;
-                    if (bName.equals(s.toString())){
-                        brandID = b.id;
-                        brandIDStr = b.idStr;
-                        brandName = b.name;
-                        break;
-                    }
-                }
-                Toast.makeText(atv.getContext(), brandIDStr, Toast.LENGTH_SHORT).show();
-
-
+                Brands x = (Brands) parent.getItemAtPosition(position);
+                Drawable dr = Utils.loadImageFromAssets(atv.getContext(), x.logoPathStr);
+                atv.setCompoundDrawablesRelativeWithIntrinsicBounds(dr, null, null, null);
             }
         });
 
+
+
+
+        CustomListViewAdapter adapter = new CustomListViewAdapter(atv.getContext(), R.layout.custom_array_adapter, brands);
+        atv.setAdapter(adapter);
+
+        //listView.setOnItemClickListener(this);
         //253603757
-        ArrayAdapter arrayAdapter = new ArrayAdapter(atv.getContext(), R.layout.dropdown_item, Brands.convertListToNameList(brands));
-        atv.setAdapter(arrayAdapter);
+
+        //ArrayAdapter arrayAdapter = new ArrayAdapter(atv.getContext(), R.layout.dropdown_item, Brands.convertListToNameList(brands));
+       // atv.setAdapter(arrayAdapter);
 
     }
 
