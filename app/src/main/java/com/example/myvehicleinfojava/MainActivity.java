@@ -25,7 +25,7 @@ import com.example.myvehicleinfojava.dialogs.AddRepairDialog;
 import com.example.myvehicleinfojava.dialogs.AddVehicleDialog;
 import com.example.myvehicleinfojava.dialogs.FilterHistoryDialog;
 import com.example.myvehicleinfojava.fragments.HistoryFragment;
-import com.example.myvehicleinfojava.fragments.ProfileFragment;
+import com.example.myvehicleinfojava.fragments.NotificationFragment;
 import com.example.myvehicleinfojava.fragments.SettingsFragment;
 import com.example.myvehicleinfojava.fragments.TestFragment;
 import com.example.myvehicleinfojava.listeners.GeneralListener;
@@ -45,7 +45,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     final HistoryFragment historyFragment = new HistoryFragment();
-    final ProfileFragment profileFragment = new ProfileFragment();
+    final NotificationFragment notificationFragment = new NotificationFragment();
     final SettingsFragment settingsFragment = new SettingsFragment();
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = historyFragment;
@@ -163,13 +163,13 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
 
-                else if (itemID == R.id.person){
-                    changeFragment(profileFragment, null);
+                else if (itemID == R.id.notifications){
+                    changeFragment(notificationFragment, null);
 
-                   // fm.beginTransaction().add(R.id.mainLayout, profileFragment, ProfileFragment.class.getSimpleName()).hide(active).commit();
+                   // fm.beginTransaction().add(R.id.mainLayout, notificationFragment, notificationFragment.class.getSimpleName()).hide(active).commit();
 
-                    active = profileFragment;
-                    //getSupportFragmentManager().beginTransaction().replace(R.id.container,profileFragment).commit();
+                    active = notificationFragment;
+                    //getSupportFragmentManager().beginTransaction().replace(R.id.container,notificationFragment).commit();
                     return true;
                 }
                 else if (itemID == R.id.settings){

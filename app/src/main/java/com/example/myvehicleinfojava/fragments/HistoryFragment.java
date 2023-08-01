@@ -73,7 +73,6 @@ public class HistoryFragment extends Fragment implements GeneralListener , View.
         Query query = getQueryHistory(main.vehicleID);
         updateAdapter(query);
 
-        bd.rv.setAdapter(adapter);
 
         bd.clearIBT.setOnClickListener(this);
         bd.periodTV.setOnClickListener(this);
@@ -105,6 +104,8 @@ public class HistoryFragment extends Fragment implements GeneralListener , View.
 
     public Query getQueryHistory(String selectedVehicleID) {
 
+
+
         CollectionReference historyRef = db.collection("History");
         Query query = historyRef.where(Filter.equalTo(Gas.colNames.VEHICLE_ID , selectedVehicleID));//.whereEqualTo(Gas.colNames.VEHICLE_ID, selectedVehicleID);
         if (!bd.periodTV.getText().toString().isEmpty()){
@@ -131,12 +132,15 @@ public class HistoryFragment extends Fragment implements GeneralListener , View.
     }
 
     private void updateAdapter(Query query){
+
         FirestoreRecyclerOptions<History> newOptions = new FirestoreRecyclerOptions.Builder<History>()
                 .setQuery(query, History.class)
                 .build();
 
-        if (adapter == null)
+        if (adapter == null) {
             adapter = new HistoryRVAdapter(newOptions);
+            bd.rv.setAdapter(adapter);
+        }
         else
             adapter.updateOptions(newOptions);
 
@@ -156,6 +160,7 @@ public class HistoryFragment extends Fragment implements GeneralListener , View.
     }
 
     public void setQueryCompleteLsitenerAndUpdate(Query query){
+
 
         /*
         ΤΟ ΧΡΗΣΙΜΟΠΟΙΩ ΜΕ ΑΥΤΟΝ ΤΡΟΠΟ ΕΠΕΙΔΗ ΟΤΑΝ ΓΙΝΕΤΑΙ ΦΙΛΤΡΑΡΙΣΜΑ ΚΑΙ ΚΑΛΕΣΜΑ ΑΠΟ ΑΛΛΟ ΑΚΤΙΒΙΤΥ Η ΦΡΑΓΚΕΜΝΤ ΧΤΥΠΑΕΙ
@@ -223,15 +228,15 @@ public class HistoryFragment extends Fragment implements GeneralListener , View.
     @Override
     public void onResume() {
         super.onResume();
-        Query q = getQueryHistory(main.vehicleID)        ;
-        setQueryCompleteLsitenerAndUpdate(q);
+       // Query q = getQueryHistory(main.vehicleID)        ;
+       // setQueryCompleteLsitenerAndUpdate(q);
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        //adapter.opt.startListening();
+        adapter.startListening();
 
     }
 
