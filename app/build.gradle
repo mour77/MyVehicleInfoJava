@@ -4,6 +4,17 @@ plugins {
 }
 
 android {
+
+    sourceSets {
+        main {
+            res.srcDirs =
+                    [
+                            'src/main/res/logos',
+                            'src/main/res'
+                    ]
+        }
+    }
+
     namespace 'com.example.myvehicleinfojava'
     compileSdk 33
 
@@ -33,6 +44,8 @@ android {
     }
 
 }
+
+
 
 dependencies {
 

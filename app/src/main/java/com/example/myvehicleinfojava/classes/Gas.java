@@ -29,7 +29,7 @@ public class Gas {
     public String getDate() {
       //  Date d = new Date(date.getSeconds());
         Date d = (date.toDate());
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", new Locale("el", "GR") );
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", new Locale("el", "GR") );
         return dateFormat.format(d);
 
     }

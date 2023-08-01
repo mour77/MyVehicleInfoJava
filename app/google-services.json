@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "861107820797-52j3q3iahf22vij7r11o6ohvvvc3fian.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myvehicleinfojava",
+            "certificate_hash": "d7657310505dd7e1b9cb53e31e3bac4d72a4002f"
+          }
+        },
+        {
           "client_id": "861107820797-9d0jm07mitg68jns6p1rqvv93777jf5v.apps.googleusercontent.com",
           "client_type": 3
         }

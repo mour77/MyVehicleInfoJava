@@ -20,6 +20,7 @@
             android:layout_height="match_parent"
             android:inputType="none"
             android:text="Μάρκες"
+            android:drawablePadding = "32dp"
             tools:ignore="LabelFor,TouchTargetSizeCheck,TextSizeCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
