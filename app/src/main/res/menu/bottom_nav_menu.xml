@@ -11,9 +11,9 @@
 
 
     <item
-        android:id="@+id/person"
+        android:id="@+id/notifications"
         android:icon="@drawable/person_24"
-        android:title="Profile"/>
+        android:title="Notifications"/>
     <item
         android:id="@+id/settings"
         android:icon="@drawable/settings_24"
