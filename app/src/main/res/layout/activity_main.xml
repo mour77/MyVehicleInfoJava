@@ -32,9 +32,8 @@
                 and make its input type to none-->
         <AutoCompleteTextView
             android:id="@+id/autoCompleteTextView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="10"
             android:inputType="none"
 
             android:text="Brands"
@@ -45,10 +44,11 @@
         android:id="@+id/addVehicleBT"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="2"
         android:layout_margin="20dp"
+        android:layout_weight="2"
         android:background="@null"
-        android:src="@drawable/add_car_64" />
+        android:src="@drawable/add_car_64"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 
     </LinearLayout>
@@ -117,8 +117,8 @@
             android:id="@+id/add_gas_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
 
+            android:layout_marginBottom="12dp"
             android:backgroundTint="@color/black"
             android:contentDescription="@string/app_name"
             app:fabSize="normal"
@@ -142,11 +142,12 @@
             android:id="@+id/add_repair_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
+            android:layout_marginBottom="12dp"
             android:backgroundTint="@color/black"
             android:contentDescription="@string/app_name"
-
             app:fabSize="normal"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/add_notification_fab"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/person_24"
             app:tint="@color/white" />
@@ -160,6 +161,32 @@
             app:layout_constraintBottom_toBottomOf="@+id/add_repair_fab"
             app:layout_constraintEnd_toStartOf="@+id/add_repair_fab"
             app:layout_constraintTop_toTopOf="@+id/add_repair_fab" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_notification_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginBottom="12dp"
+            android:backgroundTint="@color/black"
+            android:contentDescription="@string/app_name"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/person_24"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/add_notification_action_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Ειδοποίηση"
+            app:layout_constraintBottom_toBottomOf="@+id/add_notification_fab"
+            app:layout_constraintEnd_toStartOf="@+id/add_notification_fab"
+            app:layout_constraintTop_toTopOf="@+id/add_notification_fab" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
