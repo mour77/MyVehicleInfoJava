@@ -34,8 +34,8 @@ public class HistoryRVAdapter extends FirestoreRecyclerAdapter<History, HistoryR
     @Override
     public int getItemViewType(int position) {
 
-//        return super.getItemViewType(position);
-        return getItem(position).categoryID;
+      //  return super.getItemViewType(position);
+        return getItem(position).categoryID; // για να γινει ο διαχωρισμος των layout ε βαση το categoryID
 
     }
 

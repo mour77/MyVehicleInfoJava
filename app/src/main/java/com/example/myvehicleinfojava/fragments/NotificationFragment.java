@@ -41,6 +41,8 @@ public class NotificationFragment extends Fragment {
 
     NotificationsRVAdapter adapter;
 
+    Query query;
+
     public NotificationFragment() {
         // Required empty public constructor
     }
@@ -66,8 +68,9 @@ public class NotificationFragment extends Fragment {
         bd.rv.setLayoutManager(new LinearLayoutManager(main));
 
 
-        Query query = getQueryNotifications();
+        query = getQueryNotifications();
         updateAdapter(query);
+        //setQueryCompleteLsitenerAndUpdate(query);
 
 
         return view;
@@ -94,15 +97,23 @@ public class NotificationFragment extends Fragment {
     }
 
 
-    private void updateAdapter(Query query){
+    private void updateAdapter(Query query) {
         FirestoreRecyclerOptions<Notification> newOptions = new FirestoreRecyclerOptions.Builder<Notification>()
                 .setQuery(query, Notification.class)
                 .build();
 
-        if (adapter == null)
+        if (adapter == null) {
             adapter = new NotificationsRVAdapter(newOptions);
+            bd.rv.setAdapter(adapter);
+        }
+
         else
             adapter.updateOptions(newOptions);
+
+    }
+
+
+    public void setQueryCompleteLsitenerAndUpdate(Query query){
 
 
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
