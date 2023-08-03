@@ -16,8 +16,11 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="successful_save">Αποθηκεύτηκε</string>
+    <string name="successful_save">Πετυχημένη αποθήκευση</string>
     <string name="error_save">Σφάλμα κατά την αποθήκευση</string>
-    <string name="mpaID">b6017353eaf6f077</string>
-    <string name="API_KEY">AIzaSyDwHiJe1NigNgLb5jtrkTrjQlbYHjw1SIM</string>
+
+    <string name="successful_delete">Πετυχημένη διαφραφή</string>
+    <string name="error_delete">Σφάλμα κατά την διαγραφή</string>
+
+
 </resources>

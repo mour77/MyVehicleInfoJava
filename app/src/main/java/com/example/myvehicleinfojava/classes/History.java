@@ -1,6 +1,7 @@
 package com.example.myvehicleinfojava.classes;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.text.DateFormat;
@@ -10,8 +11,11 @@ import java.util.Locale;
 
 public class History {
 
+
     public String description ,remarks;
     public String vehicleID;
+    @DocumentId
+    public String documentID;
     public int odometer;
     public double money;
 

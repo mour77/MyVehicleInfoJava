@@ -121,7 +121,6 @@ public class NotificationFragment extends Fragment {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
 
-
                     int currentSize = adapter.getItemCount();
                     //tell the recycler view that all the old items are gone
                     adapter.notifyItemRangeRemoved(0, currentSize);

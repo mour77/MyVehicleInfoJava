@@ -1,11 +1,15 @@
 package com.example.myvehicleinfojava;
 
 import android.media.Image;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +19,11 @@ import com.example.myvehicleinfojava.classes.History;
 import com.example.myvehicleinfojava.firebaseClasses.Categories;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.lang.reflect.Field;
 
 public class HistoryRVAdapter extends FirestoreRecyclerAdapter<History, HistoryRVAdapter.ViewHolder> {
 
@@ -23,8 +32,11 @@ public class HistoryRVAdapter extends FirestoreRecyclerAdapter<History, HistoryR
      * FirestoreRecyclerOptions} for configuration options.
      *
      */
+
+    private FirebaseFirestore db;
     public HistoryRVAdapter(@NonNull FirestoreRecyclerOptions<History> options) {
         super(options);
+        db = FirebaseFirestore.getInstance();
     }
 
 
@@ -77,6 +89,47 @@ public class HistoryRVAdapter extends FirestoreRecyclerAdapter<History, HistoryR
 
         }
 
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+
+                PopupMenu popup = new PopupMenu(v.getContext(), v);
+                popup.getMenuInflater().inflate(R.menu.rv_menu,popup.getMenu());
+                popup.setGravity(Gravity.END);
+
+
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId() == R.id.delete){
+                            db.collection("History").document(model.documentID)
+                                    .delete()
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Toast.makeText(v.getContext(), R.string.successful_save, Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(v.getContext(), R.string.error_save, Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+
+
+
+                popup.show();
+
+                return false;
+            }
+        });
 
 
     }
@@ -104,6 +157,10 @@ public class HistoryRVAdapter extends FirestoreRecyclerAdapter<History, HistoryR
 
 
 
+
         }
     }
+
+
+
 }
