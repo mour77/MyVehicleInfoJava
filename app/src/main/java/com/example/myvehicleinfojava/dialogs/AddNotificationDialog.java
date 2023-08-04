@@ -31,6 +31,7 @@ public class AddNotificationDialog {
         // set the custom layout
         final View customLayout = act.getLayoutInflater().inflate(R.layout.add_notification_dialog, null);
         builder.setView(customLayout);
+        EditText titleET = customLayout.findViewById(R.id.titleET);
         EditText descriptionET = customLayout.findViewById(R.id.descriptionET);
         TextView dateTV = customLayout.findViewById(R.id.dateTV);
         dateTV.setText(Utils.getCurrentDate());
@@ -45,7 +46,8 @@ public class AddNotificationDialog {
 
             Map<String, Object> notificationMap = new HashMap<>();
             notificationMap.put(Notification.colNames.UID, user.getUid());
-            notificationMap.put(Notification.colNames.DESCRIPTION, descriptionET.getText().toString());
+            notificationMap.put(Notification.colNames.TITLE, titleET.getText().toString().trim());
+            notificationMap.put(Notification.colNames.DESCRIPTION, descriptionET.getText().toString().trim());
             notificationMap.put(Notification.colNames.DATE, Utils.convertToTimestamp(dateTV.getText().toString()));
             notificationMap.put(Notification.colNames.IS_SENT, false);
 

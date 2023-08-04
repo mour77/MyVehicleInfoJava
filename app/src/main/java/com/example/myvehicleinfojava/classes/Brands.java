@@ -38,7 +38,6 @@ public class Brands {
         try {
             String jsonStr = Utils.loadJSONFromAsset(act, "dataManufacturesLogos.json");
             JSONArray info = null;
-
             info = new JSONArray(jsonStr);
 
             for (int i=0; i<info.length(); i++){
@@ -49,10 +48,12 @@ public class Brands {
                 }
             }
 
-            this.logoPathStr = logoPathStr;
 
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
     }
+
+
+
 }

@@ -15,7 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
-import com.example.myvehicleinfojava.CustomListViewAdapter;
+import com.example.myvehicleinfojava.CustomBrandsViewAdapter;
 import com.example.myvehicleinfojava.Utils;
 import com.example.myvehicleinfojava.classes.GasTypes;
 import com.example.myvehicleinfojava.MainActivity;
@@ -24,7 +24,6 @@ import com.example.myvehicleinfojava.classes.Brands;
 import com.example.myvehicleinfojava.classes.Vehicle;
 import com.example.myvehicleinfojava.listeners.GeneralListener;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -119,6 +118,10 @@ public class AddVehicleDialog {
             vehicleMap.put(Vehicle.colNames.ARITHMOS_KIKLOFORIAS, arKikloforiasET.getText().toString().trim());
             vehicleMap.put(Vehicle.colNames.VIN,vinET.getText().toString().trim());
 
+            vehicleMap.put(Vehicle.colNames.LOGO_LOCAL_PATH , Utils.getLogoPathStrByBrandName(act, brandName));
+
+
+
 
 
             db.collection("Vehicles").document()
@@ -167,24 +170,7 @@ public class AddVehicleDialog {
 
         addListToBrandsDropDown(brandsATV , brands);
 
-//        db.collection("Brands").orderBy("name")
-//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            List<Brands> brands = new ArrayList<>();
-//                            //List<String> brandsModels = new ArrayList<>();
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//
-//                                Brands b = document.toObject(Brands.class);
-//                                b.idStr = document.getId();
-//                                brands.add(b);
-//                                //brandsModels.add(b.name);
-//                            }
-//                            addListToBrandsDropDown(brandsATV , brands);
-//                        }
-//                    }
-//                });
+
     }
 
 
@@ -207,7 +193,7 @@ public class AddVehicleDialog {
 
 
 
-        CustomListViewAdapter adapter = new CustomListViewAdapter(atv.getContext(), R.layout.custom_array_adapter, brands);
+        CustomBrandsViewAdapter adapter = new CustomBrandsViewAdapter(atv.getContext(), R.layout.custom_array_adapter, brands);
         atv.setAdapter(adapter);
 
         //listView.setOnItemClickListener(this);

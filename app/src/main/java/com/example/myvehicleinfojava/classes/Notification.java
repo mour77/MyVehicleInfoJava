@@ -1,6 +1,7 @@
 package com.example.myvehicleinfojava.classes;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.text.DateFormat;
@@ -11,8 +12,11 @@ import java.util.Locale;
 public class Notification {
 
     public String id;
+    public String title;
     public String description;
     public String uid;
+    @DocumentId
+    public String documentID;
     @ServerTimestamp
     public Timestamp date;
     public boolean isSent;
@@ -32,6 +36,7 @@ public class Notification {
 
     public static class colNames{
         public static final String DESCRIPTION = "description";
+        public static final String TITLE = "title";
         public static final String IS_SENT = "isSent";
         public static final String DATE = "date";
         public static final String UID = "uid";

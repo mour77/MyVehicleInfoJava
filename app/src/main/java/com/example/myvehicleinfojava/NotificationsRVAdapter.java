@@ -43,8 +43,6 @@ public class NotificationsRVAdapter extends FirestoreRecyclerAdapter<Notificatio
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.notification_rv, parent, false);
 
-
-
         return new NotificationsRVAdapter.ViewHolder(view);
     }
 

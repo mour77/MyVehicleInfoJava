@@ -63,14 +63,12 @@ public class NotificationFragment extends Fragment {
         bd = FragmentNotificationBinding.inflate(inflater, container, false);
         View view = bd.getRoot();
 
-
         db = FirebaseFirestore.getInstance();
         bd.rv.setLayoutManager(new LinearLayoutManager(main));
 
-
         query = getQueryNotifications();
         updateAdapter(query);
-        //setQueryCompleteLsitenerAndUpdate(query);
+
 
 
         return view;

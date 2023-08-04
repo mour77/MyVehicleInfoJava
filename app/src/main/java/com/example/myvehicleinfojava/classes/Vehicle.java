@@ -7,7 +7,15 @@ public class Vehicle {
     public int gasTypeIDInt;
     public int capacity;
 
-    public String arKikloforias,  vin;
+    public String arKikloforias,  vin ;
+    public String logoLocalPath ;
+
+
+
+    @Override
+    public String toString() {
+        return brand + " " + model;
+    }
 
 
     public static class colNames{
@@ -24,5 +32,6 @@ public class Vehicle {
         public static final String CAPACITY = "capacity";
         public static final String ARITHMOS_KIKLOFORIAS = "arithmos_kikloforias";
         public static final String VIN = "vin";
+        public static final String LOGO_LOCAL_PATH = "logoLocalPath";
     }
 }

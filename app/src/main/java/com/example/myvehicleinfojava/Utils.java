@@ -27,6 +27,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import androidx.core.util.Pair;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
 public class Utils {
 
    public static void setDatePicker(Context ctx, TextView tv){
@@ -167,4 +171,26 @@ public class Utils {
             return null;
         }
     }
+
+
+    public static String getLogoPathStrByBrandName(Activity act, String brandName) {
+        try {
+            String jsonStr = Utils.loadJSONFromAsset(act, "dataManufacturesLogos.json");
+            JSONArray info = null;
+            info = new JSONArray(jsonStr);
+
+            for (int i=0; i<info.length(); i++){
+                if (brandName.equals(info.getJSONObject(i).getString("name"))){
+                    return info.getJSONObject(i).getJSONObject("image").getString("localThumb");
+                }
+            }
+
+
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        return "";
+    }
+
 }

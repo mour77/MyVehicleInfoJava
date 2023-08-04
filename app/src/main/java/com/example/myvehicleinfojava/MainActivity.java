@@ -9,15 +9,16 @@ import androidx.fragment.app.FragmentManager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.example.myvehicleinfojava.classes.Brands;
 import com.example.myvehicleinfojava.classes.Vehicle;
 import com.example.myvehicleinfojava.databinding.ActivityMainBinding;
 import com.example.myvehicleinfojava.dialogs.AddGasDialog;
@@ -28,7 +29,6 @@ import com.example.myvehicleinfojava.dialogs.FilterHistoryDialog;
 import com.example.myvehicleinfojava.fragments.HistoryFragment;
 import com.example.myvehicleinfojava.fragments.NotificationFragment;
 import com.example.myvehicleinfojava.fragments.SettingsFragment;
-import com.example.myvehicleinfojava.fragments.TestFragment;
 import com.example.myvehicleinfojava.listeners.GeneralListener;
 import com.example.myvehicleinfojava.listeners.HistoryFilterListener;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -293,14 +293,22 @@ public class MainActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     List<Vehicle> vehicles = new ArrayList<>();
                     List<String> brandsModels = new ArrayList<>();
+                    List<Brands> brands = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
 
                         Vehicle v = document.toObject(Vehicle.class);
                         v.vehicleID = document.getId();
                         vehicles.add(v);
                         brandsModels.add(v.brand + " " + v.model);
+
+
+                        Brands b = new Brands();
+                        b.name = v.brand;
+                        b.setLogoPathStr(MainActivity.this);
+                        brands.add(b);
+
                     }
-                    addListToDropDown(vehicles , brandsModels);
+                    addListToDropDown(vehicles , brandsModels , brands);
                 } else {
                 }
             }
@@ -310,7 +318,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void addListToDropDown(List<Vehicle> vehicles, List<String> brandsModels){
+    @SuppressLint("SetTextI18n")
+    private void addListToDropDown(List<Vehicle> vehicles, List<String> brandsModels, List<Brands> brands){
 
 
         bd.autoCompleteTextView.addTextChangedListener(new TextWatcher() {
@@ -326,14 +335,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
+
                 for (Vehicle v: vehicles){
                     String brandModel = v.brand + " " + v.model;
                     if (brandModel.equals(s.toString())){
                         vehicleID = v.vehicleID;
+                        Drawable dr = Utils.loadImageFromAssets(MainActivity.this, v.logoLocalPath);
+                        bd.autoCompleteTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(dr, null, null, null);
+
                         break;
                     }
                 }
 
+//                for (Vehicle v: vehicles){
+//                    String brandModel = v.brand + " " + v.model;
+//                    if (brandModel.equals(s.toString())){
+//                        vehicleID = v.vehicleID;
+//                        break;
+//                    }
+//                }
+//
 
                 if (active instanceof HistoryFragment){
                     GeneralListener x = (GeneralListener) active;
@@ -344,11 +365,24 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //253603757
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.dropdown_item, brandsModels);
+        //ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.dropdown_item, brandsModels);
+        //CustomBrandsViewAdapter arrayAdapter = new CustomBrandsViewAdapter(this, R.layout.dropdown_item, brands);
+//        bd.autoCompleteTextView.setAdapter(arrayAdapter);
+//        if (brandsModels.size() > 0) {
+//            bd.autoCompleteTextView.setText(brandsModels.get(0) , false);
+//            vehicleID = vehicles.get(0).vehicleID;
+//        }
+
+        CustomVehiclesViewAdapter arrayAdapter = new CustomVehiclesViewAdapter(this, R.layout.dropdown_item, vehicles);
         bd.autoCompleteTextView.setAdapter(arrayAdapter);
-        if (brandsModels.size() > 0) {
-            bd.autoCompleteTextView.setText(brandsModels.get(0) , false);
+        if (vehicles.size() > 0) {
+            bd.autoCompleteTextView.setText(vehicles.get(0).brand + " " + vehicles.get(0).model, false);
             vehicleID = vehicles.get(0).vehicleID;
+            Drawable dr = Utils.loadImageFromAssets(MainActivity.this, vehicles.get(0).logoLocalPath);
+
+
+            bd.autoCompleteTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(dr, null, null, null);
+
         }
     }
 

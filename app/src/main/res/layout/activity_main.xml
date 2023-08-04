@@ -33,11 +33,12 @@
         <AutoCompleteTextView
             android:id="@+id/autoCompleteTextView"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="73dp"
             android:inputType="none"
+            android:drawablePadding="22dp"
 
             android:text="Brands"
-            tools:ignore="LabelFor" />
+            tools:ignore="LabelFor,TouchTargetSizeCheck,TextSizeCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <ImageButton
