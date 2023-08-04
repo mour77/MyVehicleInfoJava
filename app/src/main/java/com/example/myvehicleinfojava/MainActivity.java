@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         actionBar = getSupportActionBar();
         if (actionBar != null) {
             // providing title for the ActionBar
-            actionBar.setTitle("History");
+            actionBar.setTitle("Ιστορικό");
             // methods to display the icon in the ActionBar
             actionBar.setDisplayUseLogoEnabled(true);
             actionBar.setDisplayShowHomeEnabled(true);
@@ -161,6 +161,8 @@ public class MainActivity extends AppCompatActivity {
                     active = historyFragment;
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, historyFragment).commit();
                     showMainActivitiesChilds();
+                    actionBar.setTitle("Ιστορικό");
+
                     return true;
                 }
 
@@ -172,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
                     active = notificationFragment;
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,notificationFragment).commit();
                     hideMainActivitiesChilds();
+                    actionBar.setTitle("Ειδοποιήσεις");
 
                     return true;
                 }
@@ -184,6 +187,8 @@ public class MainActivity extends AppCompatActivity {
                     active = settingsFragment;
                     getSupportFragmentManager().beginTransaction().replace(R.id.container,settingsFragment).commit();
                     hideMainActivitiesChilds();
+                    actionBar.setTitle("Ρυθμίσεις");
+
                     return true;
                 }
 

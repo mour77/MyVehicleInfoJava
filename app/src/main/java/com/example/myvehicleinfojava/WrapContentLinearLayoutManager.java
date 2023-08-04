@@ -34,6 +34,13 @@ public class WrapContentLinearLayoutManager extends LinearLayoutManager {
                     itemAdapter.notifyItemRangeInserted(0, task.getResult().size()); ΜΕΓΕΘΟΣ ΚΑΙΝΟΥΡΙΑΣ
                     adapter.updateOptions(newOptions);
 
+
+
+                    NEO UPDATE
+
+                    ΤΟ ΧΡΗΣΙΜΟΠΟΙΩ ΤΕΛΙΚΑ ΕΠΕΙΔΗ ΟΤΑΝ Η ΕΦΑΡΜΟΓΗ ΕΠΑΝΕΡΧΕΤΑΙ ΑΠΟ ΠΑΡΑΣΚΗΝΙΟ ΧΤΥΠΑΕΙ ΚΑΙ ΔΕΝ ΕΧΩ ΒΡΕΙ ΛΥΣΗ ΑΠΟ ΤΗΝ ΤΙΓΜΗ ΠΟΥ ΕΙΝΑΙ
+                    ΣΕ ΔΙΑΦΟΡΙΤΚΟ ΟΠΩΣ ΑΝΑΦΕΡΩ ΠΑΝΩ
+
      */
 
     public WrapContentLinearLayoutManager(Context context) {

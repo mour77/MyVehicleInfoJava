@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.myvehicleinfojava.Utils;
+import com.example.myvehicleinfojava.WrapContentLinearLayoutManager;
 import com.example.myvehicleinfojava.classes.History;
 import com.example.myvehicleinfojava.HistoryRVAdapter;
 import com.example.myvehicleinfojava.MainActivity;
@@ -37,6 +38,7 @@ public class HistoryFragment extends Fragment implements GeneralListener , View.
     MainActivity main;
     FragmentHistoryBinding bd ;
     FirebaseFirestore db;
+    Query query;
 
     HistoryRVAdapter adapter;
     Fragment.SavedState savedState;
@@ -68,9 +70,10 @@ public class HistoryFragment extends Fragment implements GeneralListener , View.
         }
 
         db = FirebaseFirestore.getInstance();
-        bd.rv.setLayoutManager(new LinearLayoutManager(main));
+        bd.rv.setLayoutManager(new WrapContentLinearLayoutManager(main));
+       // bd.rv.setLayoutManager(new LinearLayoutManager(main));
 
-        Query query = getQueryHistory(main.vehicleID);
+        query = getQueryHistory(main.vehicleID);
         updateAdapter(query);
 
 
@@ -89,8 +92,8 @@ public class HistoryFragment extends Fragment implements GeneralListener , View.
 
             @Override
             public void afterTextChanged(Editable s) {
-                Query q = getQueryHistory(main.vehicleID);
-                setQueryCompleteLsitenerAndUpdate(q);
+                query = getQueryHistory(main.vehicleID);
+                setQueryCompleteLsitenerAndUpdate(query);
 
             }
         });
@@ -106,7 +109,7 @@ public class HistoryFragment extends Fragment implements GeneralListener , View.
 
 
 
-        CollectionReference historyRef = db.collection("History");
+         CollectionReference historyRef = db.collection("History");
         Query query = historyRef.where(Filter.equalTo(Gas.colNames.VEHICLE_ID , selectedVehicleID));//.whereEqualTo(Gas.colNames.VEHICLE_ID, selectedVehicleID);
         if (!bd.periodTV.getText().toString().isEmpty()){
             String [] splitDates = bd.periodTV.getText().toString().split("-");
@@ -153,7 +156,7 @@ public class HistoryFragment extends Fragment implements GeneralListener , View.
     @Override
     public void sendResult(String result) {
 
-        Query query = getQueryHistory(result);
+         query = getQueryHistory(result);
         setQueryCompleteLsitenerAndUpdate(query);
 
 
@@ -228,14 +231,19 @@ public class HistoryFragment extends Fragment implements GeneralListener , View.
     @Override
     public void onResume() {
         super.onResume();
-       // Query q = getQueryHistory(main.vehicleID)        ;
-       // setQueryCompleteLsitenerAndUpdate(q);
+        //Query q = getQueryHistory(main.vehicleID)        ;
+        setQueryCompleteLsitenerAndUpdate(query);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
+//        if (adapter != null) {
+//            FirestoreRecyclerOptions<History> newOptions = new FirestoreRecyclerOptions.Builder<History>()
+//                    .setQuery(getQueryHistory(main.vehicleID), History.class)
+//                    .build();
+//            adapter = new HistoryRVAdapter(newOptions);
+//        }
         adapter.startListening();
 
     }
@@ -244,7 +252,8 @@ public class HistoryFragment extends Fragment implements GeneralListener , View.
     public void onStop() {
         super.onStop();
         adapter.stopListening();
-        adapter=null;
+
+     //   adapter=null;
 
     }
 
