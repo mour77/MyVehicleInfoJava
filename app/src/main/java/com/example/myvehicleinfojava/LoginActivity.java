@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
         binding.gmailLoginBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(LoginActivity.this, "eleos", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(LoginActivity.this, "eleos", Toast.LENGTH_SHORT).show();
                 Intent intent = googleSignInClient.getSignInIntent();
                 resultLauncher.launch(intent);
 
@@ -83,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    Toast.makeText(LoginActivity.this, String.valueOf(result.getResultCode()), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(LoginActivity.this, String.valueOf(result.getResultCode()), Toast.LENGTH_SHORT).show();
 
                     if (result.getResultCode() == Activity.RESULT_OK) {
 
