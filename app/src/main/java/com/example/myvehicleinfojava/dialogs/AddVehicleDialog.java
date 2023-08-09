@@ -22,6 +22,7 @@ import com.example.myvehicleinfojava.MainActivity;
 import com.example.myvehicleinfojava.R;
 import com.example.myvehicleinfojava.classes.Brands;
 import com.example.myvehicleinfojava.classes.Vehicle;
+import com.example.myvehicleinfojava.fragments.HistoryFragment;
 import com.example.myvehicleinfojava.listeners.GeneralListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -130,8 +131,13 @@ public class AddVehicleDialog {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(act, R.string.successful_save, Toast.LENGTH_SHORT).show();
-                            if (act instanceof MainActivity)
-                                ((MainActivity) act).getBrands();
+                            if (act instanceof MainActivity){
+                                MainActivity x = (MainActivity) act;
+                                if ( x.active instanceof HistoryFragment){
+                                    HistoryFragment his = (HistoryFragment) x.active;
+                                    his.getBrands();
+                                }
+                            }
 
                         }
                     })
@@ -186,6 +192,7 @@ public class AddVehicleDialog {
 
                 Brands x = (Brands) parent.getItemAtPosition(position);
                 Drawable dr = Utils.loadImageFromAssets(atv.getContext(), x.logoPathStr);
+                brandName = x.name;
                 atv.setCompoundDrawablesRelativeWithIntrinsicBounds(dr, null, null, null);
             }
         });

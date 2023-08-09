@@ -21,7 +21,8 @@
 
     <string name="successful_delete">Πετυχημένη διαφραφή</string>
     <string name="error_delete">Σφάλμα κατά την διαγραφή</string>
-    <string name="delete_period">ιαγραφή περιόδου</string>
+    <string name="select_period">Επιλέξτε περίοδο</string>
+    <string name="delete_period">Διαγραφή περιόδου</string>
 
 
 

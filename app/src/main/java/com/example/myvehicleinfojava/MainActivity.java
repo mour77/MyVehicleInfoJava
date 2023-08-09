@@ -3,6 +3,7 @@ package com.example.myvehicleinfojava;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -18,13 +19,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.myvehicleinfojava.classes.Brands;
-import com.example.myvehicleinfojava.classes.Vehicle;
+
 import com.example.myvehicleinfojava.databinding.ActivityMainBinding;
 import com.example.myvehicleinfojava.dialogs.AddGasDialog;
 import com.example.myvehicleinfojava.dialogs.AddNotificationDialog;
 import com.example.myvehicleinfojava.dialogs.AddRepairDialog;
-import com.example.myvehicleinfojava.dialogs.AddVehicleDialog;
 import com.example.myvehicleinfojava.dialogs.FilterHistoryDialog;
 import com.example.myvehicleinfojava.fragments.HistoryFragment;
 import com.example.myvehicleinfojava.fragments.NotificationFragment;
@@ -33,6 +32,7 @@ import com.example.myvehicleinfojava.listeners.GeneralListener;
 import com.example.myvehicleinfojava.listeners.HistoryFilterListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     final NotificationFragment notificationFragment = new NotificationFragment();
     final SettingsFragment settingsFragment = new SettingsFragment();
     final FragmentManager fm = getSupportFragmentManager();
-    Fragment active = historyFragment;
+    public Fragment active = historyFragment;
 
     public ActionBar actionBar;
 
@@ -63,6 +63,17 @@ public class MainActivity extends AppCompatActivity {
     public Integer[] maincategoryIDs;
 
     ActionMenuItemView filterMenuItem;
+
+
+
+
+
+
+
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,21 +95,16 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setDisplayShowHomeEnabled(true);
         }
 
-        getBrands();
+       // getBrands();
 
         manageFabs();
-
+//        bd.bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+//        fm.beginTransaction().add(R.id.container,settingsFragment, "3").hide(settingsFragment).commit();
+//        fm.beginTransaction().add(R.id.container,notificationFragment, "2").hide(notificationFragment).commit();
+//        fm.beginTransaction().add(R.id.container,historyFragment, "1").commit();
         manageFragments();
 
 
-        bd.addVehicleBT.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddVehicleDialog.show(MainActivity.this,  result -> {resultFromDialog = result;});
-
-
-            }
-        });
 
 
 
@@ -125,8 +131,8 @@ public class MainActivity extends AppCompatActivity {
                    // String [] idsStr = result.replace("[","").replace("]","").split(",");
                     maincategoryIDs = categoryIDs;
                     if (active instanceof HistoryFragment){
-                        Query query = historyFragment.getQueryHistory(vehicleID);
-                        historyFragment.setQueryCompleteLsitenerAndUpdate(query);
+                         historyFragment.getQueryHistory(vehicleID);
+                         historyFragment.setQueryCompleteLsitenerAndUpdate();
 
                         //  historyFragment.setFilteredHistoryAdapter(maincategoryIDs);
                     }
@@ -147,7 +153,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void manageFragments() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.container,active).commit();
+        //getSupportFragmentManager().beginTransaction().replace(R.id.container,active).commit();
+        fm.beginTransaction().add(R.id.container,settingsFragment, "3").hide(settingsFragment).commit();
+        fm.beginTransaction().add(R.id.container,notificationFragment, "2").hide(notificationFragment).commit();
+        fm.beginTransaction().add(R.id.container,historyFragment, "1").commit();
         bd.bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @SuppressLint("NonConstantResourceId")
             @Override
@@ -156,10 +165,10 @@ public class MainActivity extends AppCompatActivity {
 
 
                 if (itemID == R.id.history) {
-                   // changeFragment(historyFragment, null);
-                 //   fm.beginTransaction().add(R.id.mainLayout, historyFragment, HistoryFragment.class.getSimpleName()).hide(active).commit();
+                    fm.beginTransaction().hide(active).show(historyFragment).commit();
+
                     active = historyFragment;
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, historyFragment).commit();
+                  //  getSupportFragmentManager().beginTransaction().replace(R.id.container, historyFragment).commit();
                     showMainActivitiesChilds();
                     actionBar.setTitle("Ιστορικό");
 
@@ -167,12 +176,10 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 else if (itemID == R.id.notifications){
-                   // changeFragment(notificationFragment, null);
-
-                   // fm.beginTransaction().add(R.id.mainLayout, notificationFragment, NotificationFragment.class.getSimpleName()).hide(active).commit();
+                    fm.beginTransaction().hide(active).show(notificationFragment).commit();
 
                     active = notificationFragment;
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container,notificationFragment).commit();
+                   // getSupportFragmentManager().beginTransaction().replace(R.id.container,notificationFragment).commit();
                     hideMainActivitiesChilds();
                     actionBar.setTitle("Ειδοποιήσεις");
 
@@ -180,12 +187,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else if (itemID == R.id.settings){
 
-                   // changeFragment(settingsFragment, null);
-
-                   // fm.beginTransaction().add(R.id.mainLayout, settingsFragment, SettingsFragment.class.getSimpleName()).hide(active).commit();
+                    fm.beginTransaction().hide(active).show(settingsFragment).commit();
 
                     active = settingsFragment;
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container,settingsFragment).commit();
+                    //getSupportFragmentManager().beginTransaction().replace(R.id.container,settingsFragment).commit();
                     hideMainActivitiesChilds();
                     actionBar.setTitle("Ρυθμίσεις");
 
@@ -226,56 +231,37 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         if (!isAllFabsVisible) {                            // when isAllFabsVisible becomes
-                            // true make all the action name
-                            // texts and FABs VISIBLE.
-                            bd.addGasFab.show();
-                            bd.addRepairFab.show();
-                            bd.addNotificationFab.show();
-
-                            bd.addGasActionText.setVisibility(View.VISIBLE);
-                            bd.addRepairActionText.setVisibility(View.VISIBLE);                            // Now extend the parent FAB, as
-                            bd.addNotificationActionText.setVisibility(View.VISIBLE);                            // Now extend the parent FAB, as
-                            // user clicks on the shrinked
-                            // parent FAB
-                            bd.fab.extend();                            // make the boolean variable true as
-                            // we have set the sub FABs
-                            // visibility to GONE
-                            isAllFabsVisible = true;
+                            showFabs();
                         } else {                            // when isAllFabsVisible becomes
-                            // true make all the action name
-                            // texts and FABs GONE.
-                            bd.addGasFab.hide();
-                            bd.addRepairFab.hide();
-                            bd.addNotificationFab.hide();
-
-                            bd.addGasActionText.setVisibility(View.GONE);
-                            bd.addRepairActionText.setVisibility(View.GONE);                            // Set the FAB to shrink after user
-                            bd.addNotificationActionText.setVisibility(View.GONE);                            // Set the FAB to shrink after user
-                            // closes all the sub FABs
-                            bd.fab.shrink();                            // make the boolean variable false
-                            // as we have set the sub FABs
-                            // visibility to GONE
-                            isAllFabsVisible = false;
+                            hideFabs();
                         }
                     }
                 });
 
 
+
+
         bd.addGasFab.setOnClickListener(v -> {
             if (!isVehicleIDEmptyAndToast())
                 AddGasDialog.show(MainActivity.this, vehicleID, result -> {resultFromDialog = result;});
+            hideFabs();
+
         });
 
 
         bd.addRepairFab.setOnClickListener(v ->{
             if (!isVehicleIDEmptyAndToast())
                 AddRepairDialog.show(MainActivity.this, vehicleID, result -> {resultFromDialog = result;});
+            hideFabs();
+
         });
 
 
         bd.addNotificationFab.setOnClickListener(v ->{
             if (!isVehicleIDEmptyAndToast())
                 AddNotificationDialog.show(MainActivity.this, result -> {resultFromDialog = result;});
+            hideFabs();
+
         });
 
 
@@ -284,112 +270,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void showFabs(){
+        // true make all the action name
+        // texts and FABs VISIBLE.
+        bd.addGasFab.show();
+        bd.addRepairFab.show();
+        bd.addNotificationFab.show();
 
+        bd.addGasActionText.setVisibility(View.VISIBLE);
+        bd.addRepairActionText.setVisibility(View.VISIBLE);                            // Now extend the parent FAB, as
+        bd.addNotificationActionText.setVisibility(View.VISIBLE);                            // Now extend the parent FAB, as
+        // user clicks on the shrinked
+        // parent FAB
+        bd.fab.extend();                            // make the boolean variable true as
+        // we have set the sub FABs
+        // visibility to GONE
+        isAllFabsVisible = true;
+    }
 
+    private void hideFabs(){
+        // true make all the action name
+        // texts and FABs GONE.
+        bd.addGasFab.hide();
+        bd.addRepairFab.hide();
+        bd.addNotificationFab.hide();
 
-
-    public void getBrands() {
-
-        db.collection("Vehicles").whereEqualTo("userID", uid)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    List<Vehicle> vehicles = new ArrayList<>();
-                    List<String> brandsModels = new ArrayList<>();
-                    List<Brands> brands = new ArrayList<>();
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-
-                        Vehicle v = document.toObject(Vehicle.class);
-                        v.vehicleID = document.getId();
-                        vehicles.add(v);
-                        brandsModels.add(v.brand + " " + v.model);
-
-
-                        Brands b = new Brands();
-                        b.name = v.brand;
-                        b.setLogoPathStr(MainActivity.this);
-                        brands.add(b);
-
-                    }
-                    addListToDropDown(vehicles , brandsModels , brands);
-                } else {
-                }
-            }
-        });
+        bd.addGasActionText.setVisibility(View.GONE);
+        bd.addRepairActionText.setVisibility(View.GONE);                            // Set the FAB to shrink after user
+        bd.addNotificationActionText.setVisibility(View.GONE);                            // Set the FAB to shrink after user
+        // closes all the sub FABs
+        bd.fab.shrink();                            // make the boolean variable false
+        // as we have set the sub FABs
+        // visibility to GONE
+        isAllFabsVisible = false;
     }
 
 
-
-
-    @SuppressLint("SetTextI18n")
-    private void addListToDropDown(List<Vehicle> vehicles, List<String> brandsModels, List<Brands> brands){
-
-
-        bd.autoCompleteTextView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-
-                for (Vehicle v: vehicles){
-                    String brandModel = v.brand + " " + v.model;
-                    if (brandModel.equals(s.toString())){
-                        vehicleID = v.vehicleID;
-                        Drawable dr = Utils.loadImageFromAssets(MainActivity.this, v.logoLocalPath);
-                        bd.autoCompleteTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(dr, null, null, null);
-
-                        break;
-                    }
-                }
-
-//                for (Vehicle v: vehicles){
-//                    String brandModel = v.brand + " " + v.model;
-//                    if (brandModel.equals(s.toString())){
-//                        vehicleID = v.vehicleID;
-//                        break;
-//                    }
-//                }
-//
-
-                if (active instanceof HistoryFragment){
-                    GeneralListener x = (GeneralListener) active;
-                    x.sendResult(vehicleID);
-                }
-
-            }
-        });
-
-        //253603757
-        //ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.dropdown_item, brandsModels);
-        //CustomBrandsViewAdapter arrayAdapter = new CustomBrandsViewAdapter(this, R.layout.dropdown_item, brands);
-//        bd.autoCompleteTextView.setAdapter(arrayAdapter);
-//        if (brandsModels.size() > 0) {
-//            bd.autoCompleteTextView.setText(brandsModels.get(0) , false);
-//            vehicleID = vehicles.get(0).vehicleID;
-//        }
-
-        CustomVehiclesViewAdapter arrayAdapter = new CustomVehiclesViewAdapter(this, R.layout.dropdown_item, vehicles);
-        bd.autoCompleteTextView.setAdapter(arrayAdapter);
-        if (vehicles.size() > 0) {
-            bd.autoCompleteTextView.setText(vehicles.get(0).brand + " " + vehicles.get(0).model, false);
-            vehicleID = vehicles.get(0).vehicleID;
-            Drawable dr = Utils.loadImageFromAssets(MainActivity.this, vehicles.get(0).logoLocalPath);
-
-
-            bd.autoCompleteTextView.setCompoundDrawablesRelativeWithIntrinsicBounds(dr, null, null, null);
-
-        }
-    }
 
     private boolean isVehicleIDEmptyAndToast(){
         if (vehicleID.isEmpty()){
@@ -399,10 +315,14 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
+
+
+
+
     private void hideMainActivitiesChilds(){
-        bd.autoCompleteTextView.setVisibility(View.GONE);
-        bd.textInputLayout.setVisibility(View.GONE);
-        bd.addVehicleBT.setVisibility(View.GONE);
+//        bd.autoCompleteTextView.setVisibility(View.GONE);
+//        bd.textInputLayout.setVisibility(View.GONE);
+//        bd.addVehicleBT.setVisibility(View.GONE);
         filterMenuItem = findViewById(R.id.filter);
 
         filterMenuItem.setVisibility(View.GONE);
@@ -410,10 +330,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showMainActivitiesChilds(){
-        bd.autoCompleteTextView.setVisibility(View.VISIBLE);
-        bd.textInputLayout.setVisibility(View.VISIBLE);
-
-        bd.addVehicleBT.setVisibility(View.VISIBLE);
+//        bd.autoCompleteTextView.setVisibility(View.VISIBLE);
+//        bd.textInputLayout.setVisibility(View.VISIBLE);
+//
+//        bd.addVehicleBT.setVisibility(View.VISIBLE);
         filterMenuItem = findViewById(R.id.filter);
 
         filterMenuItem.setVisibility(View.VISIBLE);

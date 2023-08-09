@@ -4,23 +4,65 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginTop="12dp"
     tools:context=".fragments.HistoryFragment">
 
-
         <LinearLayout
-            android:id="@+id/history_linear_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            tools:ignore="UselessParent">
+            >
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="12">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/textInputLayout"
+
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="12dp"
+                            android:layout_weight="10"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                                <!-- Inside text input layout add
+                              an auto complete text view
+                                and make its input type to none-->
+                                <AutoCompleteTextView
+                                    android:id="@+id/autoCompleteTextView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="58dp"
+                                    android:drawablePadding="22dp"
+                                    android:inputType="none"
+                                    android:textSize="12sp"
+                                    android:text="Brands"
+                                    tools:ignore="LabelFor,TouchTargetSizeCheck,TextSizeCheck" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <ImageButton
+                            android:id="@+id/addVehicleBT"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_margin="20dp"
+                            android:layout_weight="2"
+                            android:background="@null"
+                            android:src="@drawable/add_car_64"
+                            tools:ignore="SpeakableTextPresentCheck" />
+
+
+                </LinearLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="12"
-                    android:layout_margin="12dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="32dp"
                     >
 
 
@@ -28,56 +70,66 @@
                             android:id="@+id/periodTV"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
+                            android:layout_marginStart="32dp"
                             android:drawablePadding="12dp"
                             android:gravity="center"
-                            android:hint="Επιλογή περιόδου"
+                            android:hint="@string/select_period"
+                            android:maxLines="2"
                             android:padding="8dp"
                             android:textSize="18sp"
                             app:drawableLeftCompat="@drawable/baseline_date_range_24"
-                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageButton
                             android:id="@+id/clearIBT"
                             android:layout_width="48dp"
-                            android:layout_height="0dp"
-                            android:layout_marginStart="3dp"
+                            android:layout_height="38dp"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginTop="3dp"
                             android:background="@drawable/transparent_background"
-                            android:src="@drawable/cancel_24"
                             android:contentDescription="@string/delete_period"
-                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:src="@drawable/cancel_24"
                             app:layout_constraintStart_toEndOf="@+id/periodTV"
                             app:layout_constraintTop_toTopOf="parent">
 
                         </ImageButton>
 
-                        <TextView
-                            android:id="@+id/totalCostTV"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
 
-                            android:layout_marginEnd="32dp"
-                            android:drawableLeft="@drawable/money_bag_24"
-
-                            android:drawablePadding="12dp"
-                            android:padding="8dp"
-                            android:textSize="18dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+                <TextView
+                    android:id="@+id/totalCostTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="58dp"
-            />
-                >
+                    android:layout_marginEnd="12dp"
+                    android:drawableLeft="@drawable/money_bag_24"
+
+                    android:drawablePadding="12dp"
+                    android:padding="8dp"
+                    android:textSize="18dp"
+                    android:layout_gravity="end"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="58dp"
+                    />
+
 
         </LinearLayout>
+
+
+
+
+
+
+
 
 </FrameLayout>
