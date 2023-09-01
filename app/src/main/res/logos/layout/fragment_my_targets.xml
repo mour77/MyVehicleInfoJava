@@ -48,10 +48,13 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout2"
-                android:layout_width="158dp"
+                android:layout_width="208dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="3dp"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+
                 app:boxBackgroundColor="@null"
                 app:layout_constraintStart_toStartOf="parent"
 
@@ -62,6 +65,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Συνολικό κόστος"
+                    android:focusable="false"
+
                     android:layout_gravity="center_vertical"
                     android:drawablePadding="12dp"
                     android:drawableStart="@drawable/money_bag_24"
@@ -74,6 +79,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:layout_marginEnd="12dp"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+
                 app:boxBackgroundColor="@null"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -84,6 +92,7 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/money_24"
                     android:drawablePadding="12dp"
+                    android:focusable="false"
                     android:background="@null"
                     android:layout_gravity="center"
                     android:hint="Απομένει"

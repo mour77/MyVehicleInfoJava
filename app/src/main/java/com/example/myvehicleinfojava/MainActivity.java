@@ -3,17 +3,13 @@ package com.example.myvehicleinfojava;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +18,6 @@ import android.widget.Toast;
 
 import com.example.myvehicleinfojava.databinding.ActivityMainBinding;
 import com.example.myvehicleinfojava.dialogs.AddGasDialog;
-import com.example.myvehicleinfojava.dialogs.AddNotificationDialog;
 import com.example.myvehicleinfojava.dialogs.AddRepairDialog;
 import com.example.myvehicleinfojava.dialogs.AddTargetDialog;
 import com.example.myvehicleinfojava.dialogs.FilterHistoryDialog;
@@ -30,20 +25,10 @@ import com.example.myvehicleinfojava.fragments.HistoryFragment;
 import com.example.myvehicleinfojava.fragments.MyTargetsFragment;
 import com.example.myvehicleinfojava.fragments.NotificationFragment;
 import com.example.myvehicleinfojava.fragments.SettingsFragment;
-import com.example.myvehicleinfojava.listeners.GeneralListener;
 import com.example.myvehicleinfojava.listeners.HistoryFilterListener;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 

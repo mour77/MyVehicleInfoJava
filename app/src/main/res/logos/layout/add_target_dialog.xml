@@ -11,31 +11,48 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="12dp">
 
         <EditText
             android:id="@+id/titleET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints="money"
-            android:hint="title"
+            android:autofillHints="Τίτλος"
+            android:hint="Τίτλος"
             tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp">
+
+        <EditText
+            android:id="@+id/costET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="Κόστος"
+            android:inputType="numberDecimal"
+            android:hint="Κόστος"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
 
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="12dp">
 
         <EditText
-            android:id="@+id/moneyET"
+            android:id="@+id/totalCostET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints="money"
+            android:autofillHints="Συνολικό κόστος"
             android:inputType="numberDecimal"
-            android:hint="money"
+            android:hint="Συνολικό κόστος"
             tools:ignore="SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -46,7 +63,7 @@
         android:id="@+id/dateTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="12dp"
         android:padding="12dp"
         android:hint="Date"
         android:textSize="18sp" />

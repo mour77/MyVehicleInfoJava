@@ -17,22 +17,10 @@ public class MovementsRVAdapter extends FirestoreRecyclerAdapter<TargetAndMoveme
 
     {
 
-        /**
-         * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
-         * FirestoreRecyclerOptions} for configuration options.
-         *
-         * @param options
-         */
+
         public MovementsRVAdapter(@NonNull FirestoreRecyclerOptions<TargetAndMovements> options) {
             super(options);
         }
-
-        /**
-         * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
-         * FirestoreRecyclerOptions} for configuration options.
-         *
-         */
-
 
 
         @NonNull
@@ -45,8 +33,7 @@ public class MovementsRVAdapter extends FirestoreRecyclerAdapter<TargetAndMoveme
 
         @Override
         public int getItemViewType ( int position){
-
-        return super.getItemViewType(position);
+            return super.getItemViewType(position);
 
     }
 

@@ -19,30 +19,39 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class AddTargetDialog {
 
-    public static void show(Activity act , GeneralListener listener){
+    public static void show(Activity act , GeneralListener listener ){
         show(act, listener , null);
     }
 
-    public static void show(Activity act , GeneralListener listener , String targetID ){
+    public static void show(Activity act , GeneralListener listener , TargetAndMovements target){
         AlertDialog.Builder builder = new AlertDialog.Builder(act);
         builder.setTitle("Προσθήκη στόχου");
 
+        boolean hasTargetID = target != null && target.documentID != null && !target.documentID.isEmpty();
         // set the custom layout
         final View customLayout = act.getLayoutInflater().inflate(R.layout.add_target_dialog, null);
         builder.setView(customLayout);
         EditText titleET = customLayout.findViewById(R.id.titleET);
-        EditText moneyET = customLayout.findViewById(R.id.moneyET);
+        EditText totalCostET = customLayout.findViewById(R.id.totalCostET);
+        EditText costET = customLayout.findViewById(R.id.costET);
         TextView dateTV = customLayout.findViewById(R.id.dateTV);
         dateTV.setText(Utils.getCurrentDate());
         Utils.setDatePicker(act,dateTV);
 
-        // add a button
+
+        if (hasTargetID)
+            totalCostET.setVisibility(View.GONE);
+        else
+            costET.setVisibility(View.GONE);
+
+            // add a button
         builder.setPositiveButton("OK", (dialog, which) -> {
 
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -54,17 +63,18 @@ public class AddTargetDialog {
 
             targetMap.put(TargetAndMovements.colNames.TITLE, titleET.getText().toString().trim());
 
-            if (targetID != null && !targetID.isEmpty())
-                targetMap.put(TargetAndMovements.colNames.COST, Utils.checkAndParseDouble(moneyET.getText().toString().trim()));
-            else
-                targetMap.put(TargetAndMovements.colNames.TOTAL_COST, Utils.checkAndParseDouble(moneyET.getText().toString().trim()));
-
+            if (hasTargetID)
+                targetMap.put(TargetAndMovements.colNames.COST, Utils.checkAndParseDouble(costET.getText().toString().trim()));
+            else {
+                targetMap.put(TargetAndMovements.colNames.TOTAL_COST, Utils.checkAndParseDouble(totalCostET.getText().toString().trim()));
+                targetMap.put(TargetAndMovements.colNames.REMAINING_COST, Utils.checkAndParseDouble(totalCostET.getText().toString().trim()));
+            }
             targetMap.put(TargetAndMovements.colNames.DATE, Utils.convertToTimestamp(dateTV.getText().toString()));
 
 
             DocumentReference ref;
-            if (targetID != null && !targetID.isEmpty()){
-                ref = db.collection("Targets").document(targetID).collection("movements").document();
+            if (hasTargetID){
+                ref = db.collection("Targets").document(target.documentID).collection("movements").document();
             }
             else {
                 ref = db.collection("Targets").document();
@@ -75,8 +85,14 @@ public class AddTargetDialog {
                 @Override
                 public void onSuccess(Void aVoid) {
                     Toast.makeText(act, R.string.successful_save, Toast.LENGTH_SHORT).show();
+                    if (hasTargetID) {
+                        updateRemainingCost(target, Utils.checkAndParseDouble(costET.getText().toString().trim()), listener );
+                    }
+
                     dialog.dismiss();
                 }
+
+
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
@@ -90,4 +106,11 @@ public class AddTargetDialog {
         dialog.show();
     }
 
+
+    private static  void updateRemainingCost(TargetAndMovements target, double cost, GeneralListener listener) {
+        double remainingCost = target.remaining_cost - cost;
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Targets").document(target.documentID).update(TargetAndMovements.colNames.REMAINING_COST, remainingCost);
+        listener.sendResult(String.valueOf(remainingCost));
+    }
 }

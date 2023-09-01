@@ -31,6 +31,7 @@ import com.example.myvehicleinfojava.databinding.FragmentHistoryBinding;
 import com.example.myvehicleinfojava.databinding.FragmentMyTargetsBinding;
 import com.example.myvehicleinfojava.databinding.FragmentNotificationBinding;
 import com.example.myvehicleinfojava.dialogs.AddTargetDialog;
+import com.example.myvehicleinfojava.listeners.GeneralListener;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -47,7 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class MyTargetsFragment extends Fragment {
+public class MyTargetsFragment extends Fragment   {
 
 
     MainActivity main;
@@ -60,6 +61,8 @@ public class MyTargetsFragment extends Fragment {
 
     Query queryTargets;
     Query queryMovements;
+
+    TargetAndMovements selectedTarget;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,7 +90,8 @@ public class MyTargetsFragment extends Fragment {
 
 
 
-        bd.addMovementBT.setOnClickListener(v -> AddTargetDialog.show(main, result -> {resultFromDialog = result;} , targetID));
+
+        bd.addMovementBT.setOnClickListener(v -> AddTargetDialog.show(main, result -> {bd.remainingCostTV.setText(result);} , selectedTarget));
 
         return view;
     }
@@ -147,14 +151,15 @@ public class MyTargetsFragment extends Fragment {
                     if (target.equals(s.toString())){
 
                         targetID = x.documentID;
+                        selectedTarget = x;
 
-                        ;
                         //updateAdapter(getQueryMovements());
                         queryMovements = getQueryMovements();
                         setQueryCompleteLsitenerAndUpdate();
 
                         bd.totalCostTV.setText(String.valueOf(x.total_cost));
                         bd.remainingCostTV.setText(String.valueOf(x.remaining_cost));
+
 
                         break;
                     }
@@ -256,4 +261,7 @@ public class MyTargetsFragment extends Fragment {
         if (adapter !=null)
             adapter.stopListening();
     }
+
+
+
 }
