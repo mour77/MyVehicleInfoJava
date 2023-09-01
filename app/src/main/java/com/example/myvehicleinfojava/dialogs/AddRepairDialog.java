@@ -55,6 +55,15 @@ public class AddRepairDialog {
         dateTV.setText(Utils.getCurrentDate());
         Utils.setDatePicker(act,dateTV);
 
+        if (history != null){
+            descriptionET.setText(history.description);
+            moneyET.setText(String.valueOf(history.money));
+            odometerET.setText(String.valueOf(history.odometer));
+            nextRepairOdometerET.setText(String.valueOf(history.nextRepairOdometer));
+            dateTV.setText(history.getDate());
+            remarksET.setText(history.remarks);
+        }
+
 
         // add a button
         builder.setPositiveButton("OK", (dialog, which) -> {

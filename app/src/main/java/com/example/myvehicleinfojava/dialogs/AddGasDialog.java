@@ -48,6 +48,12 @@ public class AddGasDialog  {
         dateTV.setText(Utils.getCurrentDate());
         Utils.setDatePicker(act,dateTV);
 
+        if (gas != null){
+            litresET.setText(String.valueOf(gas.litres));
+            moneyET.setText(String.valueOf(gas.money));
+            dateTV.setText(gas.getDate());
+        }
+
         // add a button
         builder.setPositiveButton("OK", (dialog, which) -> {
 
