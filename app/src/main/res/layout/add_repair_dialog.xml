@@ -54,6 +54,21 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <EditText
+            android:id="@+id/nextRepairOdometerET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Next Repair Odometer"
+            android:inputType="numberDecimal"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <TextView
         android:id="@+id/dateTV"
         android:layout_width="match_parent"
@@ -79,18 +94,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
 
-        <TextView
-            android:id="@+id/mapTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="map"
-            tools:ignore="SpeakableTextPresentCheck" />
-    </com.google.android.material.textfield.TextInputLayout>
 
 
 </LinearLayout>

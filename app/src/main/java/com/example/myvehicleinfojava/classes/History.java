@@ -17,6 +17,7 @@ public class History {
     @DocumentId
     public String documentID;
     public int odometer;
+    public int nextRepairOdometer;
     public double money;
 
     public String uid;

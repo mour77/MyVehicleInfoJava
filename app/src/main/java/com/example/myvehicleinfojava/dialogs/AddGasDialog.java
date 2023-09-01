@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import com.example.myvehicleinfojava.R;
 import com.example.myvehicleinfojava.Utils;
 import com.example.myvehicleinfojava.classes.Gas;
+import com.example.myvehicleinfojava.classes.History;
 import com.example.myvehicleinfojava.classes.Repair;
 import com.example.myvehicleinfojava.firebaseClasses.Categories;
 import com.example.myvehicleinfojava.listeners.GeneralListener;
@@ -25,7 +26,16 @@ import java.util.Map;
 
 public class AddGasDialog  {
 
-    public static void show(Activity act , String vehicleID, GeneralListener listener){
+    public static void show(Activity act , String vehicleID ) {
+        showDialog(act,vehicleID, null);
+    }
+
+    public static void show(Activity act , String vehicleID , History history ) {
+        showDialog(act,vehicleID, history);
+    }
+
+
+    private static void showDialog(Activity act , String vehicleID , History gas ){
         AlertDialog.Builder builder = new AlertDialog.Builder(act);
         builder.setTitle("Καύσιμο");
 

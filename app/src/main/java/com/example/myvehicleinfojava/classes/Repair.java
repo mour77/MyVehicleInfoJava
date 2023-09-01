@@ -14,6 +14,7 @@ public class Repair {
         public static final String DESCRIPTION = "description";
         public static final String MONEY = "money";
         public static final String ODOMETER = "odometer";
+        public static final String NEXT_REPAIR_ODOMETER = "nextRepairOdometer";
         public static final String DATE = "date";
         public static final String REMARKS = "remarks";
         public static final String CATEGORY_ID = "categoryID";

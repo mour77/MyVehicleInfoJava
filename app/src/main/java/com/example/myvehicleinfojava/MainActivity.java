@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
 
         bd.addGasFab.setOnClickListener(v -> {
             if (!isVehicleIDEmptyAndToast())
-                AddGasDialog.show(MainActivity.this, vehicleID, result -> {resultFromDialog = result;});
+                AddGasDialog.show(MainActivity.this, vehicleID);
             hideFabs();
 
         });
@@ -266,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
 
         bd.addRepairFab.setOnClickListener(v ->{
             if (!isVehicleIDEmptyAndToast())
-                AddRepairDialog.show(MainActivity.this, vehicleID, result -> {resultFromDialog = result;});
+                AddRepairDialog.show(MainActivity.this, vehicleID);
             hideFabs();
 
         });

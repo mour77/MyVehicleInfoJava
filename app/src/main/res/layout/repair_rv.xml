@@ -111,18 +111,28 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="22dp"
+            android:textColorHint="@color/red"
+            app:hintTextAppearance="@style/TextLabel"
+       
+            >
 
-
-
-
-
-
-
-
-
-
-
-
+            <EditText
+                android:id="@+id/nextRepairET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Επόμενη αλλαγή"
+                android:text="xaaxxa"
+                android:focusable="false"
+                android:clickable="false"
+                android:cursorVisible="false"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
 
 
     </LinearLayout>

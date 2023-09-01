@@ -12,11 +12,13 @@ import androidx.annotation.NonNull;
 import com.example.myvehicleinfojava.MainActivity;
 import com.example.myvehicleinfojava.R;
 import com.example.myvehicleinfojava.Utils;
+import com.example.myvehicleinfojava.classes.History;
 import com.example.myvehicleinfojava.classes.Repair;
 import com.example.myvehicleinfojava.firebaseClasses.Categories;
 import com.example.myvehicleinfojava.listeners.GeneralListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,7 +30,15 @@ import java.util.Map;
 
 public class AddRepairDialog {
 
-    public static void show(Activity act , String vehicleID, GeneralListener listener){
+    public static void show(Activity act , String vehicleID) {
+        showDialog(act, vehicleID, null);
+    }
+    public static void show(Activity act , String vehicleID, History history) {
+        showDialog(act, vehicleID, history);
+
+    }
+
+    private static void showDialog(Activity act , String vehicleID, History history){
         AlertDialog.Builder builder = new AlertDialog.Builder(act);
        // builder.setTitle(Collections.REPAIRS.text);
         builder.setTitle("repair");
@@ -39,17 +49,12 @@ public class AddRepairDialog {
         EditText descriptionET = customLayout.findViewById(R.id.descriptionET);
         EditText moneyET = customLayout.findViewById(R.id.moneyET);
         EditText odometerET = customLayout.findViewById(R.id.odometerET);
+        EditText nextRepairOdometerET = customLayout.findViewById(R.id.nextRepairOdometerET);
         TextView dateTV = customLayout.findViewById(R.id.dateTV);
         EditText remarksET = customLayout.findViewById(R.id.remarksET);
-        TextView mapTV = customLayout.findViewById(R.id.mapTV);
         dateTV.setText(Utils.getCurrentDate());
         Utils.setDatePicker(act,dateTV);
-        mapTV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setMap(act);
-            }
-        });
+
 
         // add a button
         builder.setPositiveButton("OK", (dialog, which) -> {
@@ -65,12 +70,13 @@ public class AddRepairDialog {
             repairMap.put(Repair.colNames.DESCRIPTION, descriptionET.getText().toString());
             repairMap.put(Repair.colNames.MONEY, Utils.checkAndParseDouble(moneyET.getText().toString()));
             repairMap.put(Repair.colNames.ODOMETER, Utils.checkAndParseInteger(odometerET.getText().toString().trim()));
+            repairMap.put(Repair.colNames.NEXT_REPAIR_ODOMETER, Utils.checkAndParseInteger(nextRepairOdometerET.getText().toString().trim()));
             repairMap.put(Repair.colNames.DATE,Utils.convertToTimestamp(dateTV.getText().toString()));
             repairMap.put(Repair.colNames.REMARKS, remarksET.getText().toString().trim());
             repairMap.put(Repair.colNames.CATEGORY_ID, Categories.REPAIR);
 
 
-            db.collection("History").document()
+             db.collection("History").document()
                     .set(repairMap)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -87,6 +93,7 @@ public class AddRepairDialog {
                     });
 
         });
+
         // create and show the alert dialog
         AlertDialog dialog = builder.create();
         dialog.show();

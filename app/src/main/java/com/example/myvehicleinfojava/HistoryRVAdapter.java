@@ -1,11 +1,13 @@
 package com.example.myvehicleinfojava;
 
+import android.app.Activity;
 import android.media.Image;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -16,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myvehicleinfojava.classes.Gas;
 import com.example.myvehicleinfojava.classes.History;
+import com.example.myvehicleinfojava.dialogs.AddGasDialog;
+import com.example.myvehicleinfojava.dialogs.AddRepairDialog;
 import com.example.myvehicleinfojava.firebaseClasses.Categories;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -27,6 +31,7 @@ import java.lang.reflect.Field;
 
 public class HistoryRVAdapter extends FirestoreRecyclerAdapter<History, HistoryRVAdapter.ViewHolder> {
 
+    private final Activity act;
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
      * FirestoreRecyclerOptions} for configuration options.
@@ -34,9 +39,11 @@ public class HistoryRVAdapter extends FirestoreRecyclerAdapter<History, HistoryR
      */
 
     private FirebaseFirestore db;
-    public HistoryRVAdapter(@NonNull FirestoreRecyclerOptions<History> options) {
+    public HistoryRVAdapter(@NonNull FirestoreRecyclerOptions<History> options,  Activity act) {
         super(options);
         db = FirebaseFirestore.getInstance();
+        this.act = act;
+
     }
 
 
@@ -84,6 +91,13 @@ public class HistoryRVAdapter extends FirestoreRecyclerAdapter<History, HistoryR
         else if (model.categoryID == Categories.REPAIR){
             holder.descriptionTV.setText(model.description);
             holder.kmTV.setText(String.valueOf(model.odometer));
+            if (model.nextRepairOdometer > 0) {
+                holder.nextRepairOdometerET.setVisibility(View.VISIBLE);
+                holder.nextRepairOdometerET.setText(String.valueOf(model.nextRepairOdometer));
+            }
+            else
+                holder.nextRepairOdometerET.setVisibility(View.GONE);
+
             holder.remarksTV.setText(String.valueOf(model.remarks));
 
 
@@ -102,6 +116,15 @@ public class HistoryRVAdapter extends FirestoreRecyclerAdapter<History, HistoryR
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId() == R.id.edit){
+                            if (model.categoryID == Categories.REPAIR)
+                                AddRepairDialog.show(act, model.vehicleID, model);
+
+                            else if (model.categoryID == Categories.GAS)
+                                AddGasDialog.show(act, model.vehicleID, model);
+
+                        }
+
                         if (item.getItemId() == R.id.delete){
                             db.collection("History").document(model.documentID)
                                     .delete()
@@ -140,7 +163,9 @@ public class HistoryRVAdapter extends FirestoreRecyclerAdapter<History, HistoryR
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView litresTV, moneyTV ,descriptionTV ,remarksTV;
-        TextView dateTV , kmTV;
+        TextView dateTV , kmTV ;
+
+        EditText nextRepairOdometerET;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -153,6 +178,7 @@ public class HistoryRVAdapter extends FirestoreRecyclerAdapter<History, HistoryR
             descriptionTV = itemView.findViewById(R.id.descriptionTV);
             remarksTV = itemView.findViewById(R.id.remarksTV);
             kmTV = itemView.findViewById(R.id.kmTV);
+            nextRepairOdometerET = itemView.findViewById(R.id.nextRepairET);
 
 
 

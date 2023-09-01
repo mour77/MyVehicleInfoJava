@@ -29,6 +29,7 @@ import com.example.myvehicleinfojava.classes.Vehicle;
 import com.example.myvehicleinfojava.databinding.FragmentHistoryBinding;
 import com.example.myvehicleinfojava.dialogs.AddVehicleDialog;
 import com.example.myvehicleinfojava.listeners.GeneralListener;
+import com.example.myvehicleinfojava.listeners.HistoryFilterListener;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -45,7 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class HistoryFragment extends Fragment implements GeneralListener , View.OnClickListener {
+public class HistoryFragment extends Fragment implements HistoryFilterListener, View.OnClickListener {
 
     MainActivity main;
     FragmentHistoryBinding bd ;
@@ -94,8 +95,8 @@ public class HistoryFragment extends Fragment implements GeneralListener , View.
         setQueryCompleteLsitenerAndUpdate();
 
 
-       // bd.rv.setLayoutManager(new WrapContentLinearLayoutManager(main));
-        bd.rv.setLayoutManager(new LinearLayoutManager(main));
+        bd.rv.setLayoutManager(new WrapContentLinearLayoutManager(main));
+       // bd.rv.setLayoutManager(new LinearLayoutManager(main));
 
 
 
@@ -145,7 +146,7 @@ public class HistoryFragment extends Fragment implements GeneralListener , View.
                 .setQuery(query, History.class)
                 .build();
 
-        adapter = new HistoryRVAdapter(newOptions);
+        adapter = new HistoryRVAdapter(newOptions ,main);
         bd.rv.setAdapter(adapter);
     }
 
@@ -279,7 +280,7 @@ public class HistoryFragment extends Fragment implements GeneralListener , View.
                 .build();
 
         if (adapter == null) {
-            adapter = new HistoryRVAdapter(newOptions);
+            adapter = new HistoryRVAdapter(newOptions, main);
             bd.rv.setAdapter(adapter);
         }
         else
@@ -291,11 +292,6 @@ public class HistoryFragment extends Fragment implements GeneralListener , View.
 
 
 
-    @Override
-    public void sendResult(String result) {
-
-
-    }
 
     public void setQueryCompleteLsitenerAndUpdate(){
 
@@ -392,10 +388,10 @@ public class HistoryFragment extends Fragment implements GeneralListener , View.
     }
 
 
+    @Override
+    public void sendFilteredCategoryIDs(Integer[] categoryIDs) {
+        getQueryHistory(main.vehicleID);
+        setQueryCompleteLsitenerAndUpdate();
 
-
-
-
-
-
+    }
 }
