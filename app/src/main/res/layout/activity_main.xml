@@ -104,7 +104,7 @@
             android:backgroundTint="@color/black"
             android:contentDescription="@string/app_name"
             app:fabSize="normal"
-            app:layout_constraintBottom_toTopOf="@+id/add_notification_fab"
+            app:layout_constraintBottom_toTopOf="@+id/add_target_fab"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/person_24"
             app:tint="@color/white" />
@@ -120,7 +120,7 @@
             app:layout_constraintTop_toTopOf="@+id/add_repair_fab" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add_notification_fab"
+            android:id="@+id/add_target_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -134,14 +134,14 @@
             app:tint="@color/white" />
 
         <TextView
-            android:id="@+id/add_notification_action_text"
+            android:id="@+id/add_target_action_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="Ειδοποίηση"
-            app:layout_constraintBottom_toBottomOf="@+id/add_notification_fab"
-            app:layout_constraintEnd_toStartOf="@+id/add_notification_fab"
-            app:layout_constraintTop_toTopOf="@+id/add_notification_fab" />
+            android:text="Στόχος"
+            app:layout_constraintBottom_toBottomOf="@+id/add_target_fab"
+            app:layout_constraintEnd_toStartOf="@+id/add_target_fab"
+            app:layout_constraintTop_toTopOf="@+id/add_target_fab" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

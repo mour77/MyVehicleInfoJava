@@ -24,8 +24,10 @@ import com.example.myvehicleinfojava.databinding.ActivityMainBinding;
 import com.example.myvehicleinfojava.dialogs.AddGasDialog;
 import com.example.myvehicleinfojava.dialogs.AddNotificationDialog;
 import com.example.myvehicleinfojava.dialogs.AddRepairDialog;
+import com.example.myvehicleinfojava.dialogs.AddTargetDialog;
 import com.example.myvehicleinfojava.dialogs.FilterHistoryDialog;
 import com.example.myvehicleinfojava.fragments.HistoryFragment;
+import com.example.myvehicleinfojava.fragments.MyTargetsFragment;
 import com.example.myvehicleinfojava.fragments.NotificationFragment;
 import com.example.myvehicleinfojava.fragments.SettingsFragment;
 import com.example.myvehicleinfojava.listeners.GeneralListener;
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     final HistoryFragment historyFragment = new HistoryFragment();
     final NotificationFragment notificationFragment = new NotificationFragment();
+    final MyTargetsFragment myTargetsFragment = new MyTargetsFragment();
     final SettingsFragment settingsFragment = new SettingsFragment();
     final FragmentManager fm = getSupportFragmentManager();
     public Fragment active = historyFragment;
@@ -154,7 +157,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void manageFragments() {
         //getSupportFragmentManager().beginTransaction().replace(R.id.container,active).commit();
-        fm.beginTransaction().add(R.id.container,settingsFragment, "3").hide(settingsFragment).commit();
+        fm.beginTransaction().add(R.id.container,settingsFragment, "4").hide(settingsFragment).commit();
+        fm.beginTransaction().add(R.id.container,myTargetsFragment, "3").hide(myTargetsFragment).commit();
         fm.beginTransaction().add(R.id.container,notificationFragment, "2").hide(notificationFragment).commit();
         fm.beginTransaction().add(R.id.container,historyFragment, "1").commit();
         bd.bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -182,6 +186,17 @@ public class MainActivity extends AppCompatActivity {
                    // getSupportFragmentManager().beginTransaction().replace(R.id.container,notificationFragment).commit();
                     hideMainActivitiesChilds();
                     actionBar.setTitle("Ειδοποιήσεις");
+
+                    return true;
+                }
+
+                else if (itemID == R.id.targets){
+                    fm.beginTransaction().hide(active).show(myTargetsFragment).commit();
+
+                    active = myTargetsFragment;
+                   // getSupportFragmentManager().beginTransaction().replace(R.id.container,notificationFragment).commit();
+                    hideMainActivitiesChilds();
+                    actionBar.setTitle("Οι στόχοι μου");
 
                     return true;
                 }
@@ -216,10 +231,10 @@ public class MainActivity extends AppCompatActivity {
     private void manageFabs() {
         bd.addGasFab.setVisibility(View.GONE);
         bd.addRepairFab.setVisibility(View.GONE);
-        bd.addNotificationFab.setVisibility(View.GONE);
+        bd.addTargetFab.setVisibility(View.GONE);
         bd.addGasActionText.setVisibility(View.GONE);
         bd.addRepairActionText.setVisibility(View.GONE);
-        bd.addNotificationActionText.setVisibility(View.GONE);
+        bd.addTargetActionText.setVisibility(View.GONE);
         // action name texts and all the sub FABs are
         // invisible
         isAllFabsVisible = false;        // Set the Extended floating action button to
@@ -257,9 +272,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        bd.addNotificationFab.setOnClickListener(v ->{
-            if (!isVehicleIDEmptyAndToast())
-                AddNotificationDialog.show(MainActivity.this, result -> {resultFromDialog = result;});
+//        bd.addNotificationFab.setOnClickListener(v ->{
+//            if (!isVehicleIDEmptyAndToast())
+//                AddNotificationDialog.show(MainActivity.this, result -> {resultFromDialog = result;});
+//            hideFabs();
+//
+//        });
+        bd.addTargetFab.setOnClickListener(v ->{
+            AddTargetDialog.show(MainActivity.this, result -> {resultFromDialog = result;});
             hideFabs();
 
         });
@@ -275,11 +295,11 @@ public class MainActivity extends AppCompatActivity {
         // texts and FABs VISIBLE.
         bd.addGasFab.show();
         bd.addRepairFab.show();
-        bd.addNotificationFab.show();
+        bd.addTargetFab.show();
 
         bd.addGasActionText.setVisibility(View.VISIBLE);
         bd.addRepairActionText.setVisibility(View.VISIBLE);                            // Now extend the parent FAB, as
-        bd.addNotificationActionText.setVisibility(View.VISIBLE);                            // Now extend the parent FAB, as
+        bd.addTargetActionText.setVisibility(View.VISIBLE);                            // Now extend the parent FAB, as
         // user clicks on the shrinked
         // parent FAB
         bd.fab.extend();                            // make the boolean variable true as
@@ -293,11 +313,11 @@ public class MainActivity extends AppCompatActivity {
         // texts and FABs GONE.
         bd.addGasFab.hide();
         bd.addRepairFab.hide();
-        bd.addNotificationFab.hide();
+        bd.addTargetFab.hide();
 
         bd.addGasActionText.setVisibility(View.GONE);
         bd.addRepairActionText.setVisibility(View.GONE);                            // Set the FAB to shrink after user
-        bd.addNotificationActionText.setVisibility(View.GONE);                            // Set the FAB to shrink after user
+        bd.addTargetActionText.setVisibility(View.GONE);                            // Set the FAB to shrink after user
         // closes all the sub FABs
         bd.fab.shrink();                            // make the boolean variable false
         // as we have set the sub FABs
